@@ -1,7 +1,14 @@
 package com.example.project_prm.fragment.login;
 
-import com.example.project_prm.fragment.login.LoginCallback;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.annotation.MainThread;
+
 import com.example.project_prm.model.User;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 public class LoginController {
 
@@ -14,6 +21,26 @@ public class LoginController {
     }
 
     public void login(String username, String password) {
-        loginCallBack.onLoginResult(true, "Success");
+        loginCallBack.onLoading(true);
+        ExecutorService exc = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        exc.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        loginCallBack.onLoginResult(true, "Success");
+                        loginCallBack.onLoading(false);
+                    }
+                });
+            }
+        });
     }
 }

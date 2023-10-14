@@ -1,9 +1,24 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Project_PRM" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.Project_PRM" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary Brand Color-->
+        <item name="colorPrimary">@color/lavender</item>
+        <item name="colorPrimaryVariant">@color/lavender</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Second Brand Color -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">@color/transparent</item>
     </style>
 
     <style name="Theme.Project_PRM" parent="Base.Theme.Project_PRM" />
+
+    <!-- Card Background region -->
+    <style name="CardBackground">
+        <item name = "background">@color/white</item>
+    </style>
+    <!-- end region -->
+
 </resources>

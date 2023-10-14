@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.project_prm.R;
+import com.example.project_prm.component.DialogLoadingFragment;
 
 
 public class LoginFragment extends Fragment {
@@ -101,9 +103,17 @@ public class LoginFragment extends Fragment {
             }
 
             @Override
-            public void onSomethingResult() {
-                Toast.makeText(requireContext(), "Hehe", Toast.LENGTH_LONG).show();
+            public void onLoading(boolean isLoading) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                if (isLoading) {
+                    DialogLoadingFragment loadingDialog = new DialogLoadingFragment();
+                    loadingDialog.show(fragmentManager, DialogLoadingFragment.TAG);
+                } else {
+                    DialogLoadingFragment dialogLoadingFragment = (DialogLoadingFragment) fragmentManager.findFragmentByTag(DialogLoadingFragment.TAG);
+                    dialogLoadingFragment.dismiss();
+                }
             }
+
         };
         loginController = new LoginController(loginCallback);
     }
