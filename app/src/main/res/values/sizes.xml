@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="medium_button_size">100dp</dimen>
+    <!-- Login region -->
+    <dimen name="medium_button_size_height">70dp</dimen>
+    <dimen name="medium_button_size_width">180dp</dimen>
+    <dimen name = "cartView_Login_border">20dp</dimen>
+    <!-- end region -->
+    <!-- common text region-->
+    <dimen name="small_text">16sp</dimen>
+    <dimen name="medium_text">20sp</dimen>
+    <dimen name="large_text">24sp</dimen>
+    <dimen name="title_text">30sp</dimen>
+    <!-- end region-->
 </resources>

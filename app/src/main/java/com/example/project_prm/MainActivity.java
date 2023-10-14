@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         isInit = false;
+        super.onDestroy();
     }
 
     private void initAction() {

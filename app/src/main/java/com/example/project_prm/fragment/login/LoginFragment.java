@@ -1,5 +1,6 @@
 package com.example.project_prm.fragment.login;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,9 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,6 +26,7 @@ import com.example.project_prm.R;
 public class LoginFragment extends Fragment {
 
     private EditText edtPassword;
+    private boolean passVisible;
     private EditText edtUsername;
     private Button btnLogin;
     private LoginController loginController;
@@ -53,6 +58,7 @@ public class LoginFragment extends Fragment {
         edtPassword = getView().findViewById(R.id.edtPassword);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initAction() {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +66,30 @@ public class LoginFragment extends Fragment {
                 String username = edtUsername.getText().toString();
                 String password = edtPassword.getText().toString();
                 loginController.login(username, password);
+            }
+        });
+
+        edtPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int Right = 2 ;
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    if(event.getRawX()>= edtPassword.getRight()-edtPassword.getCompoundDrawables()[Right].getBounds().width()){
+                        int selection = edtPassword.getSelectionEnd();
+                        if(passVisible){
+                            edtPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0, R.drawable.baseline_visibility_off_24,0);
+                            edtPassword.setTransformationMethod(new PasswordTransformationMethod());
+                            passVisible = false;
+                        }else{
+                            edtPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0, R.drawable.baseline_visibility_24,0);
+                            edtPassword.setTransformationMethod(null);
+                            passVisible = true;
+                        }
+                        edtPassword.setSelection(selection);
+                        return true ;
+                    }
+                }
+                return false;
             }
         });
     }
