@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.project_prm.R;
 import com.example.project_prm.component.DialogLoadingFragment;
+import com.example.project_prm.fragment.signup.SignUpFragment;
 
 
 public class LoginFragment extends Fragment {
@@ -31,6 +32,7 @@ public class LoginFragment extends Fragment {
     private boolean passVisible;
     private EditText edtUsername;
     private Button btnLogin;
+    private TextView tvSignUp;
     private LoginController loginController;
 
     private LoginCallback loginCallback;
@@ -58,10 +60,18 @@ public class LoginFragment extends Fragment {
         btnLogin = getView().findViewById(R.id.btnLogin);
         edtUsername = getView().findViewById(R.id.edtUsername);
         edtPassword = getView().findViewById(R.id.edtPassword);
+        tvSignUp = getView().findViewById(R.id.signUp);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void initAction() {
+        tvSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addFragment(SignUpFragment.newInstance(), "SignUpFragment");
+            }
+        });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
