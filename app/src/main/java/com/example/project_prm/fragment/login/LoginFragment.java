@@ -1,6 +1,7 @@
 package com.example.project_prm.fragment.login;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,6 @@ public class LoginFragment extends Fragment {
     private Button btnLogin;
     private TextView tvSignUp;
     private LoginController loginController;
-
     private LoginCallback loginCallback;
 
     public LoginFragment() {}
@@ -84,7 +84,7 @@ public class LoginFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 final int Right = 2 ;
                 if(event.getAction() == MotionEvent.ACTION_UP){
-                    if(event.getRawX()>= edtPassword.getRight()-edtPassword.getCompoundDrawables()[Right].getBounds().width()){
+                    if(event.getRawX() >= edtPassword.getRight()-edtPassword.getCompoundDrawables()[Right].getBounds().width()){
                         int selection = edtPassword.getSelectionEnd();
                         if(passVisible){
                             edtPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0, R.drawable.baseline_visibility_off_24,0);
@@ -130,6 +130,7 @@ public class LoginFragment extends Fragment {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragmentContainer, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
     }
 
