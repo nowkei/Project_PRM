@@ -1,11 +1,13 @@
 package com.example.project_prm;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.project_prm.fragment.login.LoginFragment;
+import com.example.project_prm.fragment.welcome.WelcomeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,10 +27,11 @@ public class MainActivity extends AppCompatActivity {
                 R.anim.anim_slide_in,
                 R.anim.anim_fade_out,
                 R.anim.anim_fade_in,
-                R.anim.anim_slide_out).setReorderingAllowed(true);
+                R.anim.anim_slide_out)
+                .setReorderingAllowed(true);
 
         if (!isInit) {
-            fragmentTransaction.add(R.id.fragmentContainer, LoginFragment.newInstance("", ""), LoginFragment.TAG)
+            fragmentTransaction.add(R.id.fragmentContainer, WelcomeFragment.newInstance(), LoginFragment.TAG)
                     .commit();
             isInit = true;
         }
@@ -43,4 +46,5 @@ public class MainActivity extends AppCompatActivity {
     private void initAction() {
 
     }
+
 }
