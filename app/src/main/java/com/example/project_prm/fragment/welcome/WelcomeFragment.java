@@ -41,7 +41,7 @@ public class WelcomeFragment extends Fragment {
         Sign_Up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(SignUpFragment.newInstance(), "SignUpFragment");
+                replaceFragment(SignUpFragment.newInstance("" , "", ""), "SignUpFragment");
             }
         });
     }
