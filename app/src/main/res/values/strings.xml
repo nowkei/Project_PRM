@@ -10,4 +10,7 @@
     <string name="hint_text_email">Enter your email</string>
     <string name="hint_text_password">Enter your password</string>
     <!-- end region -->
+
+<!--    Sign Up region-->
+    <string name="button_signup_text">Sign Up</string>
 </resources>
