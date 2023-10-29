@@ -24,7 +24,6 @@ import com.example.project_prm.R;
 import com.example.project_prm.component.DialogLoadingFragment;
 import com.example.project_prm.fragment.login.LoginFragment;
 
-
 public class SignUpFragment extends Fragment {
     private EditText edtUsername;
     private EditText edtEmail;
@@ -102,7 +101,7 @@ public class SignUpFragment extends Fragment {
                     Toast.makeText(requireContext(), R.string.empty_confirmPassword, Toast.LENGTH_LONG).show();
                 }
                 if (password.equals(cfPassword)) {
-                    signUpController.signUp(username, email, password, cfPassword);
+                    signUpController.signUp(username, email, password);
                 } else {
                     Toast.makeText(requireContext(), R.string.match_password, Toast.LENGTH_LONG).show();
                 }
@@ -148,7 +147,13 @@ public class SignUpFragment extends Fragment {
         signUpCallBack = new SignUpCallBack() {
             @Override
             public void onSignUpResult(boolean result, String message) {
-                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+                if (result) {
+                    String password = edtPassword.getText().toString();
+                    String email = edtEmail.getText().toString();
+                    replaceFragment(LoginFragment.newInstance(email,password), LoginFragment.TAG);
+                } else {
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -170,6 +175,12 @@ public class SignUpFragment extends Fragment {
     private void addFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.anim_slide_in,
+                R.anim.anim_fade_out,
+                R.anim.anim_fade_in,
+                R.anim.anim_slide_out);
+        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.add(R.id.fragmentContainer, fragment, tag);
         fragmentTransaction.commit();
     }
@@ -177,6 +188,12 @@ public class SignUpFragment extends Fragment {
     private void replaceFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.anim_slide_in,
+                R.anim.anim_fade_out,
+                R.anim.anim_fade_in,
+                R.anim.anim_slide_out);
+        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.replace(R.id.fragmentContainer, fragment, tag);
         fragmentTransaction.commit();
     }

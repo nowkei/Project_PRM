@@ -34,14 +34,14 @@ public class WelcomeFragment extends Fragment {
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(LoginFragment.newInstance("",""), "LoginFragment");
+                replaceFragment(LoginFragment.newInstance("",""), LoginFragment.TAG);
             }
         });
 
         Sign_Up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(SignUpFragment.newInstance("" , "", "", ""), "SignUpFragment");
+                replaceFragment(SignUpFragment.newInstance("" , "", "", ""), SignUpFragment.TAG);
             }
         });
     }
@@ -61,6 +61,12 @@ public class WelcomeFragment extends Fragment {
     private void replaceFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.anim_slide_in,
+                R.anim.anim_fade_out,
+                R.anim.anim_fade_in,
+                R.anim.anim_slide_out);
+        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.replace(R.id.fragmentContainer, fragment, tag);
         fragmentTransaction.commit();
     }
