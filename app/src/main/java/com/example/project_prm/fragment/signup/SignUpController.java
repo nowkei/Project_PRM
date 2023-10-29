@@ -18,7 +18,7 @@ public class SignUpController {
         this.signUpCallBack = signUpCallBack;
     }
 
-    public void signUp(String username, String email, String password){
+    public void signUp(String username, String email, String password, String cfpassword){
         signUpCallBack.onLoading(true);
         ExecutorService exc = Executors.newSingleThreadExecutor();
 

@@ -23,6 +23,21 @@
             android:background="@mipmap/backgroundcardview">
 
             <EditText
+                android:id="@+id/edtCfPassword"
+                android:layout_width="240dp"
+                android:layout_height="39dp"
+                android:layout_marginTop="120dp"
+                android:drawableRight="@drawable/baseline_visibility_24"
+                android:ems="10"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:longClickable="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+
+            <EditText
                 android:id="@+id/edtUsername"
                 android:layout_width="240dp"
                 android:layout_height="39dp"
@@ -39,7 +54,7 @@
                 android:id="@+id/edtEmail"
                 android:layout_width="240dp"
                 android:layout_height="39dp"
-                android:layout_marginTop="72dp"
+                android:layout_marginTop="44dp"
                 android:ems="10"
                 android:hint="Email"
                 android:inputType="text"
@@ -52,7 +67,7 @@
                 android:id="@+id/btnSignUp"
                 android:layout_width="156dp"
                 android:layout_height="51dp"
-                android:layout_marginBottom="68dp"
+                android:layout_marginBottom="48dp"
                 android:backgroundTint="@color/l_blue"
                 android:text="Sign Up"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -64,7 +79,7 @@
                 android:id="@+id/edtPassword"
                 android:layout_width="240dp"
                 android:layout_height="39dp"
-                android:layout_marginTop="72dp"
+                android:layout_marginTop="44dp"
                 android:drawableRight="@drawable/baseline_visibility_24"
                 android:ems="10"
                 android:hint="Password"
@@ -79,13 +94,38 @@
                 android:id="@+id/tvRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
+                android:layout_marginBottom="76dp"
                 android:text="Register"
                 android:textSize="34sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/edtUsername"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text=" Already have an account?"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtCfPassword" />
+
+            <TextView
+                android:id="@+id/tvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="Sign in"
+                android:textColor="#03808F"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.065"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/edtCfPassword" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

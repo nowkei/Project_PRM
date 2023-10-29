@@ -66,7 +66,7 @@ public class LoginFragment extends Fragment {
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFragment(SignUpFragment.newInstance("","", ""), "SignUpFragment");
+                addFragment(SignUpFragment.newInstance("","", "", ""), "SignUpFragment");
             }
         });
 

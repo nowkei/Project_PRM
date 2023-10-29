@@ -16,27 +16,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.example.project_prm.R;
 import com.example.project_prm.component.DialogLoadingFragment;
+import com.example.project_prm.fragment.login.LoginFragment;
+
 
 public class SignUpFragment extends Fragment {
     private EditText edtUsername;
     private EditText edtEmail;
     private EditText edtPassword;
+    private EditText edtCfPassword;
     private boolean passVisible;
     private Button btnSignup;
+    private TextView tvLogin;
     private SignUpController signUpController;
     private SignUpCallBack signUpCallBack;
-    public SignUpFragment() {}
 
-    public static SignUpFragment newInstance(String username, String email, String password) {
+    public SignUpFragment() {
+    }
+
+    public static SignUpFragment newInstance(String username, String email, String password, String cfPassword) {
         SignUpFragment fragment = new SignUpFragment();
         Bundle args = new Bundle();
         args.putString(USERNAME, username);
         args.putString(EMAIL, email);
         args.putString(PASSWORD, password);
+        args.putString(CONFIRM_PASSWORD, cfPassword);
         return fragment;
     }
 
@@ -47,48 +56,94 @@ public class SignUpFragment extends Fragment {
         initAction();
         initObserver();
     }
+
     private void initView() {
         btnSignup = getView().findViewById(R.id.btnSignUp);
         edtUsername = getView().findViewById(R.id.edtUsername);
         edtEmail = getView().findViewById(R.id.edtEmail);
         edtPassword = getView().findViewById(R.id.edtPassword);
+        edtCfPassword = getView().findViewById(R.id.edtCfPassword);
+        tvLogin = getView().findViewById(R.id.tvLogin);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void initAction() {
+        tvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(LoginFragment.newInstance("", ""), SignUpFragment.TAG);
+            }
+        });
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String username = edtUsername.getText().toString();
                 String email = edtEmail.getText().toString();
                 String password = edtPassword.getText().toString();
-                signUpController.signUp(username, email, password);
+                String cfPassword = edtCfPassword.getText().toString();
+                if (username.isEmpty()) {
+                    Toast.makeText(requireContext(), R.string.empty_username, Toast.LENGTH_LONG).show();
+                }
+                if (email.isEmpty()) {
+                    Toast.makeText(requireContext(), R.string.empty_email, Toast.LENGTH_LONG).show();
+                }
+                if (!isValidEmail(email)) {
+                    Toast.makeText(requireContext(), R.string.validate_email, Toast.LENGTH_LONG).show();
+                }
+
+                if (password.isEmpty()) {
+                    Toast.makeText(requireContext(), R.string.empty_password, Toast.LENGTH_LONG).show();
+
+                } else if (password.length() < 6) {
+                    Toast.makeText(requireContext(), R.string.validate_password, Toast.LENGTH_LONG).show();
+                }
+
+                if (cfPassword.isEmpty()) {
+                    Toast.makeText(requireContext(), R.string.empty_confirmPassword, Toast.LENGTH_LONG).show();
+                }
+                if (password.equals(cfPassword)) {
+                    signUpController.signUp(username, email, password, cfPassword);
+                } else {
+                    Toast.makeText(requireContext(), R.string.match_password, Toast.LENGTH_LONG).show();
+                }
             }
         });
         edtPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                final int Right = 2 ;
-                if(event.getAction() == MotionEvent.ACTION_UP){
-                    if(event.getRawX()>= edtPassword.getRight()-edtPassword.getCompoundDrawables()[Right].getBounds().width()){
-                        int selection = edtPassword.getSelectionEnd();
-                        if(passVisible){
-                            edtPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0, R.drawable.baseline_visibility_off_24,0);
-                            edtPassword.setTransformationMethod(new PasswordTransformationMethod());
-                            passVisible = false;
-                        }else{
-                            edtPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0, R.drawable.baseline_visibility_24,0);
-                            edtPassword.setTransformationMethod(null);
-                            passVisible = true;
-                        }
-                        edtPassword.setSelection(selection);
-                        return true ;
-                    }
-                }
+                handlePasswordVisibility(edtPassword, event);
+                return false;
+            }
+        });
+
+        edtCfPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                handlePasswordVisibility(edtCfPassword, event);
                 return false;
             }
         });
     }
+
+    private void handlePasswordVisibility(EditText editText, MotionEvent event) {
+        final int Right = 2;
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (event.getRawX() >= editText.getRight() - editText.getCompoundDrawables()[Right].getBounds().width()) {
+                int selection = editText.getSelectionEnd();
+                if (passVisible) {
+                    editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_off_24, 0);
+                    editText.setTransformationMethod(new PasswordTransformationMethod());
+                    passVisible = false;
+                } else {
+                    editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_24, 0);
+                    editText.setTransformationMethod(null);
+                    passVisible = true;
+                }
+                editText.setSelection(selection);
+            }
+        }
+    }
+
     private void initObserver() {
         signUpCallBack = new SignUpCallBack() {
             @Override
@@ -140,6 +195,11 @@ public class SignUpFragment extends Fragment {
     public static final String TAG = "SignUpFragment";
     private static final String USERNAME = "SignUpUsername";
     private static final String EMAIL = "SignUpEmail";
-    private static final String PASSWORD ="SignUpPassword";
+    private static final String PASSWORD = "SignUpPassword";
+    private static final String CONFIRM_PASSWORD = "SignUpCfPassword";
 
+    private boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}";
+        return email.matches(emailPattern);
+    }
 }
