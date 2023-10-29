@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initAction();
-        //new SharedPreferencesUtil(getApplicationContext());
     }
 
     private void initAction() {
