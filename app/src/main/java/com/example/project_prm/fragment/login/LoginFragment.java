@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.project_prm.R;
 import com.example.project_prm.component.DialogLoadingFragment;
+import com.example.project_prm.fragment.home.HomeFragment;
 import com.example.project_prm.fragment.signup.SignUpFragment;
 
 
@@ -114,6 +115,9 @@ public class LoginFragment extends Fragment {
         loginCallback = new LoginCallback() {
             @Override
             public void onLoginResult(boolean result, String message) {
+                if (result) {
+                    replaceFragment(HomeFragment.newInstance("", ""), HomeFragment.TAG);
+                }
                 Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
             }
 

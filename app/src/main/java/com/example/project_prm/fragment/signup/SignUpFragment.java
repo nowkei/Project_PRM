@@ -151,9 +151,8 @@ public class SignUpFragment extends Fragment {
                     String password = edtPassword.getText().toString();
                     String email = edtEmail.getText().toString();
                     replaceFragment(LoginFragment.newInstance(email,password), LoginFragment.TAG);
-                } else {
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
                 }
+                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
             }
 
             @Override

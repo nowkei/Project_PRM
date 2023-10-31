@@ -33,7 +33,7 @@ public class LoginController {
                 if (task.isSuccessful()) {
                     loginCallBack.onLoginResult(true, "Login success");
                 } else {
-                    loginCallBack.onLoginResult(false, task.getException().getMessage());
+                    loginCallBack.onLoginResult(false, "Login fail, please try again");
                 }
                 loginCallBack.onLoading(false);
             }
