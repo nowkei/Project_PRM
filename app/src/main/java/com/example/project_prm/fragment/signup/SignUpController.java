@@ -49,12 +49,12 @@ public class SignUpController {
                             if (task.isSuccessful()) {
                                 signUpCallBack.onSignUpResult(true, "Sign up success");
                             } else {
-                                signUpCallBack.onSignUpResult(false, task.getException().getMessage());
+                                signUpCallBack.onSignUpResult(false, "Sign up fail, please try again!");
                             }
                         }
                     });
                 } else {
-                    signUpCallBack.onSignUpResult(false, task.getException().getMessage());
+                    signUpCallBack.onSignUpResult(false, "Sign up fail, please try again!");
                 }
                 signUpCallBack.onLoading(false);
             }
