@@ -66,7 +66,7 @@ public class LoginFragment extends Fragment {
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFragment(SignUpFragment.newInstance("","", ""), "SignUpFragment");
+                replaceFragment(SignUpFragment.newInstance("","", ""), "SignUpFragment");
             }
         });
 
@@ -75,7 +75,11 @@ public class LoginFragment extends Fragment {
             public void onClick(View view) {
                 String username = edtUsername.getText().toString();
                 String password = edtPassword.getText().toString();
-                loginController.login(username, password);
+                if(username.isEmpty() || password.isEmpty()){
+                    Toast.makeText(requireContext(), "Please enter your username and password", Toast.LENGTH_LONG).show();
+                }else{
+                    loginController.login(username, password);
+                }
             }
         });
 
