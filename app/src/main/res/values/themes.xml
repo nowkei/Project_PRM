@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Project_PRM" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Base.Theme.Project_PRM" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Primary Brand Color-->
         <item name="colorPrimary">@color/lavender</item>
         <item name="colorPrimaryVariant">@color/lavender</item>

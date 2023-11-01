@@ -34,14 +34,18 @@ public class WelcomeFragment extends Fragment {
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(LoginFragment.newInstance("",""), LoginFragment.TAG);
+
+                addFragment(LoginFragment.newInstance("",""), "LoginFragment");
+
             }
         });
 
         Sign_Up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(SignUpFragment.newInstance("" , "", "", ""), SignUpFragment.TAG);
+
+                addFragment(SignUpFragment.newInstance("" , "", ""), "SignUpFragment");
+
             }
         });
     }
@@ -57,6 +61,13 @@ public class WelcomeFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+    private void addFragment(Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragmentContainer, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.commit();
     }
     private void replaceFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
