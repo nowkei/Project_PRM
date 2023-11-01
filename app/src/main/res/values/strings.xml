@@ -11,8 +11,24 @@
     <string name="hint_text_password">Enter your password</string>
     <!-- end region -->
 
-<!--    Sign Up region-->
+    <!-- Sign Up region-->
     <string name="button_signup_text">Sign Up</string>
+    <string name="match_password">Passwords must match</string>
+    <string name="empty_username">Enter your Username</string>
+    <string name="empty_email">Enter your Email</string>
+    <string name="empty_password">Enter your Password</string>
+    <string name="validate_password">Password must be greater 6 character</string>
+    <string name="empty_confirmPassword">Enter your Confirm Password</string>
+    <string name="validate_email">Wrong or Invalid email address.</string>
+    <!-- end region -->
+
+    <!-- Loading region-->
+    <string name="loading">Loading, please wait...</string>
+    <!-- end region -->
+
+    <!-- Network region -->
+    <string name="no_network_connection_error_text">Please connect to internet</string>
+    <!-- end region -->
 
     <!-- SharedPreferences region -->
     <string name="preference_file_key">preference_file_key</string>

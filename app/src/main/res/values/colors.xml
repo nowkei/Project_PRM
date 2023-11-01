@@ -11,7 +11,7 @@
     <color name="lavender">#8692f7</color>
     <color name="gray">#aaa</color>
     <color name = "darkGray">#ff424242</color>
-    <color name="transparent">#000000</color>
+    <color name="transparent">#00000000</color>
     <color name="l_blue">#1E90FF</color>
     <color name="icon_background_color">#1d2438</color>
 </resources>

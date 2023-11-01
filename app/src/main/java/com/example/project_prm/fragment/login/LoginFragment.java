@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.project_prm.R;
 import com.example.project_prm.component.DialogLoadingFragment;
+import com.example.project_prm.fragment.home.HomeFragment;
 import com.example.project_prm.fragment.signup.SignUpFragment;
 
 
@@ -59,6 +60,13 @@ public class LoginFragment extends Fragment {
         edtUsername = getView().findViewById(R.id.edtUsername);
         edtPassword = getView().findViewById(R.id.edtPassword);
         tvSignUp = getView().findViewById(R.id.signUp);
+
+        if (!getArguments().getString(USERNAME).isEmpty() || getArguments().getString(USERNAME) != null) {
+            edtUsername.setText(getArguments().getString(USERNAME));
+            if (!getArguments().getString(PASSWORD).isEmpty() || getArguments().getString(PASSWORD) != null) {
+                edtPassword.setText(getArguments().getString(PASSWORD));
+            }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -66,7 +74,9 @@ public class LoginFragment extends Fragment {
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 replaceFragment(SignUpFragment.newInstance("","", ""), "SignUpFragment");
+
             }
         });
 
@@ -111,6 +121,9 @@ public class LoginFragment extends Fragment {
         loginCallback = new LoginCallback() {
             @Override
             public void onLoginResult(boolean result, String message) {
+                if (result) {
+                    replaceFragment(HomeFragment.newInstance("", ""), HomeFragment.TAG);
+                }
                 Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
             }
 
@@ -133,6 +146,12 @@ public class LoginFragment extends Fragment {
     private void addFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                        R.anim.anim_slide_in,
+                        R.anim.anim_fade_out,
+                        R.anim.anim_fade_in,
+                        R.anim.anim_slide_out);
+        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.add(R.id.fragmentContainer, fragment, tag);
         fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
@@ -141,6 +160,12 @@ public class LoginFragment extends Fragment {
     private void replaceFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.anim_slide_in,
+                R.anim.anim_fade_out,
+                R.anim.anim_fade_in,
+                R.anim.anim_slide_out);
+        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.replace(R.id.fragmentContainer, fragment, tag);
         fragmentTransaction.commit();
     }

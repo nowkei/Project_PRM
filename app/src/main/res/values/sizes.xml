@@ -5,10 +5,15 @@
     <dimen name="medium_button_size_width">240dp</dimen>
     <dimen name = "cartView_Login_border">20dp</dimen>
     <!-- end region -->
+
     <!-- common text region-->
     <dimen name="small_text">16sp</dimen>
     <dimen name="medium_text">20sp</dimen>
     <dimen name="large_text">24sp</dimen>
     <dimen name="title_text">30sp</dimen>
     <!-- end region-->
+
+    <!-- margin region -->
+    <dimen name="margin_5dp">5dp</dimen>
+    <!-- end region -->
 </resources>
