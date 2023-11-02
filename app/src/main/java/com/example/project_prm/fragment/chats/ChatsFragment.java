@@ -2,15 +2,25 @@ package com.example.project_prm.fragment.chats;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.project_prm.R;
+import com.example.project_prm.model.Chats;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +37,13 @@ public class ChatsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ChatsCallBack chatsCallBack;
+    private ChatsController chatsController;
+    private ImageView img_chatAva;
+    private TextView chatTitle;
+    private TextView chatContent;
+    private TextView chatTime;
+    private RecyclerView recyclerView;
 
     public ChatsFragment() {
         // Required empty public constructor
@@ -49,6 +66,13 @@ public class ChatsFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView();
+        initAction();
+        initObserver();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +81,31 @@ public class ChatsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+    private void initAction(){
+
+    }
+    private void initView(){
+        img_chatAva = getView().findViewById(R.id.img_chatAvatar);
+        chatTitle = getView().findViewById(R.id.chat_title);
+        chatContent = getView().findViewById(R.id.chat_content);
+        chatTime = getView().findViewById(R.id.chat_time);
+        recyclerView = getView().findViewById(R.id.rcv_chats);
+    }
+    private void initObserver(){
+        chatsCallBack = new ChatsCallBack() {
+            @Override
+            public void onChatsResult(boolean result, String message, ArrayList<Chats> chats) {
+                if(result){
+                    AdapterChats adapter = new AdapterChats(chats);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                    recyclerView.setAdapter(adapter);
+                }
+                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+            }
+        };
+        chatsController = new ChatsController(chatsCallBack);
+        chatsController.getChats();
     }
 
     private void addFragment(Fragment fragment, String tag) {

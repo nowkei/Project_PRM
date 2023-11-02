@@ -1,5 +1,6 @@
 package com.example.project_prm.fragment.notification;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,21 @@ import com.example.project_prm.model.Notification;
 
 import java.util.ArrayList;
 
-public class ItemClass extends RecyclerView.Adapter<ItemClass.WorldViewHolder> {
+public class AdapterNotification extends RecyclerView.Adapter<AdapterNotification.WorldViewHolder> {
 
     ArrayList<Notification> notifications;
 
-    public ItemClass(ArrayList<Notification> notifications) {
+    NotificationItemCallBack notificationItemCallBack;
+
+    public AdapterNotification(ArrayList<Notification> notifications, NotificationItemCallBack notificationItemCallBack) {
         this.notifications = notifications;
+        this.notificationItemCallBack = notificationItemCallBack;
+    }
+
+    public void changeDataSet(ArrayList<Notification> notifications) {
+        this.notifications.clear();
+        this.notifications.addAll(notifications);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -38,8 +48,8 @@ public class ItemClass extends RecyclerView.Adapter<ItemClass.WorldViewHolder> {
         public WorldViewHolder(View view) {
             super(view);
             imgView = (ImageView) view.findViewById(R.id.img_ava);
-            tvUsername = (TextView) view.findViewById(R.id.title);
-            tvRq = (TextView) view.findViewById(R.id.content);
+            tvUsername = (TextView) view.findViewById(R.id.chat_title);
+            tvRq = (TextView) view.findViewById(R.id.chat_content);
             btnAcp = (Button) view.findViewById(R.id.btn_accpect);
             btnDecline = (Button) view.findViewById(R.id.btn_decline);
         }
@@ -66,14 +76,30 @@ public class ItemClass extends RecyclerView.Adapter<ItemClass.WorldViewHolder> {
     }
     @NonNull
     @Override
-    public ItemClass.WorldViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterNotification.WorldViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.frag_item_notification, parent, false);
         return new WorldViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(@NonNull ItemClass.WorldViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WorldViewHolder holder, @SuppressLint("RecyclerView") int position) {
        holder.getTvUsername().setText(notifications.get(position).getUsername());
        holder.getTvRq().setText(notifications.get(position).getContent());
+       holder.getBtnAcp().setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+                notificationItemCallBack.onButtonClick("Acp", position);
+           }
+       });
+       holder.getBtnDecline().setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+                notificationItemCallBack.onButtonClick("Decline", position);
+           }
+       });
     }
+}
+
+interface NotificationItemCallBack {
+    public void onButtonClick(String button, int position);
 }
