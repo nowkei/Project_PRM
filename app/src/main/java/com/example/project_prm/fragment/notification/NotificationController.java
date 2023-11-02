@@ -25,4 +25,15 @@ public class NotificationController {
         notificationCallBack.onNotificationResult(true,"get success", notifications);
         //notificationCallBack.onLoading(false);
     }
+    public void removeNotification(int position, ArrayList<Notification> notifications) {
+        if (position >= 0 && position < notifications.size()) {
+            notifications.remove(position);
+            ArrayList<Notification> newList = new ArrayList<>();
+            newList.addAll(notifications);
+            notificationCallBack.onNotificationChange(newList);
+        } else {
+            //notificationCallBack.onNotificationResult(false, "Invalid position", notifications);
+        }
+    }
+
 }

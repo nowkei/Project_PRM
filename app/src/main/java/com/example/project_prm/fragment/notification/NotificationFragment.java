@@ -7,10 +7,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +21,6 @@ import android.widget.Toast;
 
 import com.example.project_prm.R;
 import com.example.project_prm.component.DialogLoadingFragment;
-import com.example.project_prm.fragment.home.HomeFragment;
-import com.example.project_prm.fragment.login.LoginCallback;
 import com.example.project_prm.model.Notification;
 
 import java.util.ArrayList;
@@ -50,6 +48,9 @@ public class NotificationFragment extends Fragment {
     private Button btnAcp;
     private Button btnDecline;
     private RecyclerView recyclerView;
+    private ArrayList<Notification> notifications;
+    private AdapterNotification adapter;
+
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -87,30 +88,20 @@ public class NotificationFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
     private void initAction(){
 
     }
     private void initView(){
-        imgView = getView().findViewById(R.id.img_ava);
-        tvUsername = getView().findViewById(R.id.title);
-        tvRq = getView().findViewById(R.id.content);
-        btnAcp = getView().findViewById(R.id.btn_accpect);
-        btnDecline = getView().findViewById(R.id.btn_decline);
         recyclerView = getView().findViewById(R.id.rcv_noti);
-
-
-
     }
     private void initObserver(){
         notificationCallBack = new NotificationCallBack() {
-
             @Override
             public void onNotificationResult(boolean result, String message, ArrayList<Notification> notifications) {
-                if(result){
-                    ItemClass adapter = new ItemClass(notifications);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false ));
-                    recyclerView.setAdapter(adapter);
+                if(result) {
+                    initRecycleView(notifications);
                 }
                 Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
             }
@@ -125,9 +116,30 @@ public class NotificationFragment extends Fragment {
                     dialogLoadingFragment.dismiss();
                 }
             }
+
+            @Override
+            public void onNotificationChange(ArrayList<Notification> notifications) {
+                adapter.changeDataSet(notifications);
+            }
         };
         notificationController = new NotificationController(notificationCallBack);
         notificationController.getNotification();
+    }
+
+    private void initRecycleView(ArrayList<Notification> notifications) {
+        NotificationItemCallBack callBack = new NotificationItemCallBack() {
+            @Override
+            public void onButtonClick(String button, int position) {
+                if (button.equals("Acp")) {
+
+                } else {
+                    notificationController.removeNotification(position, notifications);
+                }
+            }
+        };
+        adapter = new AdapterNotification(notifications, callBack);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false ));
+        recyclerView.setAdapter(adapter);
     }
 
     private void addFragment(Fragment fragment, String tag) {

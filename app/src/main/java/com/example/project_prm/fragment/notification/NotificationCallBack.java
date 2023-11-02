@@ -6,6 +6,6 @@ import java.util.ArrayList;
 
 public interface NotificationCallBack {
     void onLoading(boolean isLoading);
-    public void onNotificationResult(boolean result, String message, ArrayList<Notification> notifications);
-
+    void onNotificationResult(boolean result, String message, ArrayList<Notification> notifications);
+    void onNotificationChange(ArrayList<Notification> notifications);
 }
