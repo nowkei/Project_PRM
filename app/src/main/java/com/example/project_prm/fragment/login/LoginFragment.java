@@ -24,6 +24,8 @@ import com.example.project_prm.R;
 import com.example.project_prm.component.DialogLoadingFragment;
 import com.example.project_prm.fragment.home.HomeFragment;
 import com.example.project_prm.fragment.signup.SignUpFragment;
+import com.example.project_prm.util.SharedPreferencesKey;
+import com.example.project_prm.util.SharedPreferencesUtil;
 
 
 public class LoginFragment extends Fragment {
@@ -75,7 +77,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                replaceFragment(SignUpFragment.newInstance("","", ""), "SignUpFragment");
+                replaceFragment(SignUpFragment.newInstance("","", "", ""), "SignUpFragment");
 
             }
         });
@@ -120,9 +122,15 @@ public class LoginFragment extends Fragment {
     private void initObserver() {
         loginCallback = new LoginCallback() {
             @Override
-            public void onLoginResult(boolean result, String message) {
+            public void onLoginResult(boolean result, String message, String username, String email, String userID) {
                 if (result) {
-                    replaceFragment(HomeFragment.newInstance("", ""), HomeFragment.TAG);
+                    SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
+
+                    sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.USERNAME, username);
+                    sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.EMAIL, email);
+                    sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.USERID, userID);
+
+                    replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG);
                 }
                 Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
             }

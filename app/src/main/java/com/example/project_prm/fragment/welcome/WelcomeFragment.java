@@ -44,7 +44,7 @@ public class WelcomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                addFragment(SignUpFragment.newInstance("" , "", ""), "SignUpFragment");
+                addFragment(SignUpFragment.newInstance("" , "", "", ""), "SignUpFragment");
 
             }
         });
@@ -93,5 +93,5 @@ public class WelcomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_welcome, container, false);
     }
 
-    public static final String TAG = "LoginFragment";
+    public static final String TAG = "WelcomeFragment";
 }

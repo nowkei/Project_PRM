@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,23 +16,30 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.chats.ChatsFragment;
 import com.example.project_prm.fragment.friends.FriendsFragment;
+import com.example.project_prm.fragment.login.LoginCallback;
 import com.example.project_prm.fragment.notification.NotificationFragment;
 import com.example.project_prm.fragment.setting.SettingFragment;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
     private BottomNavigationView bottomNavigationView;
 
+    private HomeController homeController;
+
+    private HomeCallBack homeCallBack;
+
     public HomeFragment() {
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,7 +52,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -59,6 +66,9 @@ public class HomeFragment extends Fragment {
     private void initView() {
         bottomNavigationView = getView().findViewById(R.id.bnvNavigation);
         replaceFragment(ChatsFragment.newInstance("",""), "ChatsFragment");
+    }
+
+    private void initAction() {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -76,12 +86,26 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void initAction() {
-
+    private void initObserver() {
+        homeCallBack = new HomeCallBack() {
+            @Override
+            public void onNotificationResult(ArrayList<String> notification) {
+                initNotificationBadge(notification.size()); // testing code, remove later
+            }
+        };
+        homeController = new HomeController(homeCallBack);
+        homeController.getNotification();
     }
 
-    private void initObserver() {
-
+    private void initNotificationBadge(int size) {
+        BottomNavigationItemView itemView = bottomNavigationView.findViewById(R.id.notification);
+        View badge = LayoutInflater.from(getContext()).inflate(R.layout.icon_badge_number_layout, itemView, true);
+        TextView tvBagde = badge.findViewById(R.id.tvBadge);
+        if (size > 9) {
+            tvBagde.setText("9+");
+        } else {
+            tvBagde.setText(String.valueOf(size));
+        }
     }
 
     private void addFragment(Fragment fragment, String tag) {
@@ -110,9 +134,6 @@ public class HomeFragment extends Fragment {
         fragmentTransaction.replace(R.id.homeFragmentContainer, fragment, tag);
         fragmentTransaction.commit();
     }
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     public static final String TAG = "HomeFragment";
 }
