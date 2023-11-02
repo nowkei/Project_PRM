@@ -37,7 +37,7 @@ public class LoginFragment extends Fragment {
     private TextView tvSignUp;
     private LoginController loginController;
     private LoginCallback loginCallback;
-
+    private TextView resetPassword;
     public LoginFragment() {}
 
     public static LoginFragment newInstance(String username, String password) {
@@ -62,6 +62,7 @@ public class LoginFragment extends Fragment {
         edtUsername = getView().findViewById(R.id.edtUsername);
         edtPassword = getView().findViewById(R.id.edtPassword);
         tvSignUp = getView().findViewById(R.id.signUp);
+        resetPassword = getView().findViewById(R.id.changePass);
 
         if (!getArguments().getString(USERNAME).isEmpty() || getArguments().getString(USERNAME) != null) {
             edtUsername.setText(getArguments().getString(USERNAME));
@@ -73,6 +74,12 @@ public class LoginFragment extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     private void initAction() {
+        resetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(ForgetPasswordFragment.newInstance(""),"ForgetPasswordFragment");
+            }
+        });
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
