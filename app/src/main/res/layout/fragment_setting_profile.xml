@@ -30,7 +30,6 @@
             android:layout_height="170dp"
             android:contentDescription=""
             android:scaleType="centerCrop"
-            app:bind_image_url_blur=""
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

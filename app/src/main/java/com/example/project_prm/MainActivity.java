@@ -7,14 +7,13 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.project_prm.fragment.home.HomeFragment;
 import com.example.project_prm.fragment.login.LoginFragment;
 import com.example.project_prm.fragment.welcome.WelcomeFragment;
 import com.example.project_prm.util.SharedPreferencesKey;
 import com.example.project_prm.util.SharedPreferencesUtil;
 
 public class MainActivity extends AppCompatActivity {
-
-    private boolean isInit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +35,18 @@ public class MainActivity extends AppCompatActivity {
                 R.anim.anim_fade_in,
                 R.anim.anim_slide_out)
                 .setReorderingAllowed(true);
-        if (!isInit) {
-//            String userName = SharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
-//            if (userName != null) {
-//                // TODO: Add Host Activity For App
-//            }
-//            else {
-                fragmentTransaction.add(R.id.fragmentContainer, WelcomeFragment.newInstance(), LoginFragment.TAG)
-                        .commit();
-            //}
-            isInit = true;
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getApplicationContext());
+        if (sharedPreferencesUtil.getData(SharedPreferencesKey.USERID) != null && !sharedPreferencesUtil.getData(SharedPreferencesKey.USERID).isEmpty()) {
+            fragmentTransaction.add(R.id.fragmentContainer, HomeFragment.newInstance(), HomeFragment.TAG)
+                    .commit();
+        } else {
+            fragmentTransaction.add(R.id.fragmentContainer, WelcomeFragment.newInstance(), WelcomeFragment.TAG)
+                    .commit();
         }
     }
 
     @Override
     protected void onDestroy() {
-        isInit = false;
         super.onDestroy();
     }
 }

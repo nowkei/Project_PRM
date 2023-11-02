@@ -34,7 +34,7 @@ public class SignUpController {
                     FirebaseUser currentUser = firebaseAuth.getCurrentUser();
                     String userId = currentUser.getUid();
 
-                    databaseReferences = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                    databaseReferences = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("info");
 
                     HashMap<String, String> hashMap = new HashMap<>();
                     hashMap.put("userId", userId);

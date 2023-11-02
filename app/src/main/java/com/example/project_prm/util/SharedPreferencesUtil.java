@@ -12,7 +12,7 @@ public class SharedPreferencesUtil {
     public SharedPreferencesUtil(Context context) {
         this.context = context;
     }
-    static public void addOrUpdateData(SharedPreferencesKey dataKey, String value) {
+    public void addOrUpdateData(SharedPreferencesKey dataKey, String value) {
         SharedPreferences sharedPref =
                 context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -20,7 +20,7 @@ public class SharedPreferencesUtil {
         editor.apply();
     }
 
-    static public void deleteData(SharedPreferencesKey key) {
+    public void deleteData(SharedPreferencesKey key) {
         SharedPreferences sharedPref =
                 context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -28,7 +28,7 @@ public class SharedPreferencesUtil {
         editor.apply();
     }
 
-    static public String getData(SharedPreferencesKey key) {
+    public String getData(SharedPreferencesKey key) {
         SharedPreferences sharedPref =
                 context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         return sharedPref.getString(key.name(), "");
