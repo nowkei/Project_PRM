@@ -8,7 +8,6 @@
     tools:context=".fragment.login.LoginFragment"
     android:background="@color/white">
 
-    <!-- TODO: Update blank fragment layout -->
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -39,6 +38,7 @@
                 android:layout_height="@dimen/medium_button_size_height"
                 android:background="@drawable/bg"
                 android:text="@string/button_login_text"
+                android:textColor="@color/white"
                 android:textSize="@dimen/large_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

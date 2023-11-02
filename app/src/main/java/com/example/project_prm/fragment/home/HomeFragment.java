@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
                 if (item.getItemId() == R.id.chats && getActivity().getSupportFragmentManager().findFragmentByTag(ChatsFragment.TAG) == null) {
                     replaceFragment(ChatsFragment.newInstance("", ""), "ChatsFragment"); // add chat fragment
                 } else if (item.getItemId() == R.id.setting && getActivity().getSupportFragmentManager().findFragmentByTag(SettingFragment.TAG) == null) {
-                    replaceFragment(SettingFragment.newInstance("", ""), "SettingFragment"); // add setting fragment
+                    replaceFragment(SettingFragment.newInstance(), "SettingFragment"); // add setting fragment
                 } else if (item.getItemId() == R.id.notification && getActivity().getSupportFragmentManager().findFragmentByTag(NotificationFragment.TAG) == null) {
                     replaceFragment(NotificationFragment.newInstance("", ""), "NotificationFragment"); // add notification fragment
                 } else if (item.getItemId() == R.id.friend && getActivity().getSupportFragmentManager().findFragmentByTag(FriendsFragment.TAG) == null ){

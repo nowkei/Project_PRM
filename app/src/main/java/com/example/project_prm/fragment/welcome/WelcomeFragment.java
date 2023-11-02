@@ -44,7 +44,7 @@ public class WelcomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                addFragment(SignUpFragment.newInstance("" , "", ""), "SignUpFragment");
+                addFragment(SignUpFragment.newInstance("" , "", "", ""), "SignUpFragment");
 
             }
         });
