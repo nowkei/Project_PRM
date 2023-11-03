@@ -1,4 +1,4 @@
-package com.example.project_prm.fragment.setting;
+package com.example.project_prm.fragment.setting.profile;
 
 import android.os.Bundle;
 
@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,23 +19,25 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.project_prm.R;
-import com.example.project_prm.component.DialogLoadingFragment;
 import com.example.project_prm.fragment.home.HomeFragment;
-import com.example.project_prm.fragment.login.LoginFragment;
+import com.example.project_prm.fragment.setting.DialogChangeUserImageFragment;
+import com.example.project_prm.model.User;
+import com.example.project_prm.util.SharedPreferencesKey;
+import com.example.project_prm.util.SharedPreferencesUtil;
 
 
 public class SettingProfileFragment extends Fragment {
 
-    private static final String ADDRESS = "param1";
-    private static final String New_PASSWORD = "param2";
-    private String address;
-    private String new_password;
+    private static final String ADDRESS = "ADDRESS";
+    private static final String NEW_PASSWORD = "NEW_PASSWORD";
     private Button btnSave;
     private EditText edtOldPassWord;
     private boolean passVisible;
     private EditText edtNewPassWord;
     private ImageView imgUserImage;
-    // TODO: Rename and change types of parameters
+    private SettingProfileCallback settingProfileCallback;
+    private SettingProfileController settingProfileController;
+
     private void initView() {
         btnSave = getView().findViewById(R.id.btnSaveData);
         edtOldPassWord = getView().findViewById(R.id.edtOldPassword);
@@ -57,7 +58,7 @@ public class SettingProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(requireContext(), "Update Successful", Toast.LENGTH_LONG).show();
-                replaceFragment(HomeFragment.newInstance("",""), HomeFragment.TAG);
+                replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG);
             }
         });
 
@@ -109,10 +110,34 @@ public class SettingProfileFragment extends Fragment {
             }
         });
     }
+
+    private void initObserver() {
+        settingProfileCallback = new SettingProfileCallback() {
+            @Override
+            public void onGetUserResult(boolean result, String message, User u) {
+                edtOldPassWord.setText(u.getPassword());
+            }
+
+            @Override
+            public void onLoading(boolean isLoading) {
+
+            }
+        };
+        settingProfileController = new SettingProfileController(settingProfileCallback);
+        getUserProfileByID();
+    }
+
+    private void getUserProfileByID() {
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
+        String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
+        settingProfileController.getUserProfile(uid);
+    }
+
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView();
         initAction();
+        initObserver();
     }
     public SettingProfileFragment() {
     }
@@ -121,7 +146,7 @@ public class SettingProfileFragment extends Fragment {
         SettingProfileFragment fragment = new SettingProfileFragment();
         Bundle args = new Bundle();
         args.putString(ADDRESS, address);
-        args.putString(New_PASSWORD, new_password);
+        args.putString(NEW_PASSWORD, new_password);
         fragment.setArguments(args);
         return fragment;
     }
@@ -130,8 +155,7 @@ public class SettingProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            address = getArguments().getString(ADDRESS);
-            new_password = getArguments().getString(New_PASSWORD);
+            // TODO
         }
     }
     private void replaceFragment(Fragment fragment, String tag) {

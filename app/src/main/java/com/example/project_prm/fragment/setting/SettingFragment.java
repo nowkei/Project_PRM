@@ -15,6 +15,7 @@ import android.widget.Button;
 
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.login.LoginFragment;
+import com.example.project_prm.fragment.setting.profile.SettingProfileFragment;
 
 public class SettingFragment extends Fragment {
 
