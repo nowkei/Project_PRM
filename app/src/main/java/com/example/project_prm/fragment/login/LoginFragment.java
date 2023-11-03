@@ -77,14 +77,14 @@ public class LoginFragment extends Fragment {
         resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(ForgetPasswordFragment.newInstance(""),"ForgetPasswordFragment");
+                addFragment(ForgetPasswordFragment.newInstance(""), ForgetPasswordFragment.TAG);
             }
         });
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                replaceFragment(SignUpFragment.newInstance("","", "", ""), "SignUpFragment");
+                replaceFragment(SignUpFragment.newInstance("","", "", ""), SignUpFragment.TAG);
 
             }
         });
