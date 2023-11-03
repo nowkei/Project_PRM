@@ -38,7 +38,7 @@ public class SettingProfileController {
                     user.setEmail(data.get("email"));
                     user.setPhoneNumber(data.get("phoneNumber"));
                     user.setPassword(data.get("password"));
-                    user.setUsername(data.get("username"));
+                    user.setUsername(data.get("userName"));
 
                     settingProfileCallback.onGetUserResult(true, "Get user profile success", user);
                 } else {

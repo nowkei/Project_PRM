@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.project_prm.R;
@@ -35,6 +36,9 @@ public class SettingProfileFragment extends Fragment {
     private boolean passVisible;
     private EditText edtNewPassWord;
     private ImageView imgUserImage;
+    private EditText address;
+    private TextView userName;
+    private TextView userEmail;
     private SettingProfileCallback settingProfileCallback;
     private SettingProfileController settingProfileController;
 
@@ -43,6 +47,9 @@ public class SettingProfileFragment extends Fragment {
         edtOldPassWord = getView().findViewById(R.id.edtOldPassword);
         edtNewPassWord = getView().findViewById(R.id.edtNewPassword);
         imgUserImage = getView().findViewById(R.id.userImage);
+        address = getView().findViewById(R.id.edtAddress);
+        userName = getView().findViewById(R.id.txtName);
+        userEmail = getView().findViewById(R.id.txtEmail);
     }
 
     private void initAction(){
@@ -116,6 +123,9 @@ public class SettingProfileFragment extends Fragment {
             @Override
             public void onGetUserResult(boolean result, String message, User u) {
                 edtOldPassWord.setText(u.getPassword());
+                address.setText(u.getAddress());
+                userName.setText(u.getUsername());
+                userEmail.setText(u.getEmail());
             }
 
             @Override
