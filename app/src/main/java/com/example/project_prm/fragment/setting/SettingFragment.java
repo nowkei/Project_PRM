@@ -13,12 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.login.LoginFragment;
 import com.example.project_prm.fragment.setting.profile.SettingProfileFragment;
+import com.example.project_prm.util.SharedPreferencesKey;
+import com.example.project_prm.util.SharedPreferencesUtil;
 
 public class SettingFragment extends Fragment {
-
 
     private Button btnLogout;
     private Button btnSetting;
@@ -32,9 +34,11 @@ public class SettingFragment extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
+                sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERID);
+                sharedPreferencesUtil.deleteData(SharedPreferencesKey.EMAIL);
+                sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERNAME);
                 replaceFragment(LoginFragment.newInstance("",""), "LoginFragment");
-
             }
         });
 
@@ -47,8 +51,13 @@ public class SettingFragment extends Fragment {
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView();
-        initAction();
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                initView();
+                initAction();
+            }
+        });
     }
     public SettingFragment() {
         // Required empty public constructor

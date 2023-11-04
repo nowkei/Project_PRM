@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.component.DialogLoadingFragment;
 import com.example.project_prm.fragment.home.HomeFragment;
@@ -58,6 +59,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void initView() {
+        ((MainActivity) getActivity()).showTitleBar(false, null);
         btnLogin = getView().findViewById(R.id.btnLogin);
         edtUsername = getView().findViewById(R.id.edtUsername);
         edtPassword = getView().findViewById(R.id.edtPassword);
@@ -144,14 +146,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onLoading(boolean isLoading) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                if (isLoading) {
-                    DialogLoadingFragment loadingDialog = new DialogLoadingFragment();
-                    loadingDialog.show(fragmentManager, DialogLoadingFragment.TAG);
-                } else {
-                    DialogLoadingFragment dialogLoadingFragment = (DialogLoadingFragment) fragmentManager.findFragmentByTag(DialogLoadingFragment.TAG);
-                    dialogLoadingFragment.dismiss();
-                }
+                ((MainActivity) getActivity()).showLoading(isLoading);
             }
 
         };

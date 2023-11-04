@@ -71,6 +71,10 @@ public class FriendsFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    private void initView() {
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

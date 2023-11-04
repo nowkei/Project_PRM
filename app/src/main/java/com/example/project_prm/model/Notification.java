@@ -1,13 +1,41 @@
 package com.example.project_prm.model;
 
-public class Notification {
+import android.os.Parcel;
+import android.os.Parcelable;
+import androidx.annotation.NonNull;
+
+public class Notification implements Parcelable {
     String username;
     String content;
+    String uid;
 
-    public Notification(String username, String content) {
+    public Notification(String username, String content, String uid) {
         this.username = username;
         this.content = content;
+        this.uid = uid;
     }
+
+    public Notification() {
+
+    }
+
+    protected Notification(Parcel in) {
+        username = in.readString();
+        content = in.readString();
+        uid = in.readString();
+    }
+
+    public static final Creator<Notification> CREATOR = new Creator<Notification>() {
+        @Override
+        public Notification createFromParcel(Parcel in) {
+            return new Notification(in);
+        }
+
+        @Override
+        public Notification[] newArray(int size) {
+            return new Notification[size];
+        }
+    };
 
     public String getUsername() {
         return username;
@@ -25,4 +53,23 @@ public class Notification {
         this.content = content;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(username);
+        parcel.writeString(content);
+        parcel.writeString(uid);
+    }
 }

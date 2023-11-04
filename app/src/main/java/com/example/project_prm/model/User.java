@@ -1,6 +1,13 @@
 package com.example.project_prm.model;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
+
+public class User implements Parcelable {
 
     private String uid;
     private String username;
@@ -9,6 +16,28 @@ public class User {
     private String phoneNumber;
     private String avatar;
     private String address;
+
+    protected User(Parcel in) {
+        uid = in.readString();
+        username = in.readString();
+        password = in.readString();
+        email = in.readString();
+        phoneNumber = in.readString();
+        avatar = in.readString();
+        address = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getAddress() {
         return address;
@@ -74,5 +103,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(uid);
+        parcel.writeString(username);
+        parcel.writeString(password);
+        parcel.writeString(email);
+        parcel.writeString(phoneNumber);
+        parcel.writeString(avatar);
+        parcel.writeString(address);
     }
 }

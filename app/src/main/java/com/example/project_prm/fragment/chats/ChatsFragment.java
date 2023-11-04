@@ -69,9 +69,14 @@ public class ChatsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView();
-        initAction();
-        initObserver();
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                initView();
+                initAction();
+                initObserver();
+            }
+        });
     }
 
     @Override
@@ -96,12 +101,11 @@ public class ChatsFragment extends Fragment {
         chatsCallBack = new ChatsCallBack() {
             @Override
             public void onChatsResult(boolean result, String message, ArrayList<Chats> chats) {
-                if(result){
+                if (result) {
                     AdapterChats adapter = new AdapterChats(chats);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                     recyclerView.setAdapter(adapter);
                 }
-                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
             }
         };
         chatsController = new ChatsController(chatsCallBack);
