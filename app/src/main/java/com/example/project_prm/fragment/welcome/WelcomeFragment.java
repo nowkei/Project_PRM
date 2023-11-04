@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.login.LoginFragment;
 import com.example.project_prm.fragment.signup.SignUpFragment;
@@ -25,7 +26,8 @@ public class WelcomeFragment extends Fragment {
     public WelcomeFragment() {
         // Required empty public constructor
     }
-    private void initView(){
+    private void initView() {
+        ((MainActivity) getActivity()).showTitleBar(false, null);
         Login = getView().findViewById(R.id.btnLoginWelcome);
         Sign_Up = getView().findViewById(R.id.btnSignUpWelcome);
     }

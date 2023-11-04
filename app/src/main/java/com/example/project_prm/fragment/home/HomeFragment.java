@@ -1,6 +1,7 @@
 package com.example.project_prm.fragment.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,13 +14,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.chats.ChatsFragment;
 import com.example.project_prm.fragment.friends.FriendsFragment;
-import com.example.project_prm.fragment.login.LoginCallback;
 import com.example.project_prm.fragment.notification.NotificationFragment;
 import com.example.project_prm.fragment.setting.SettingFragment;
-import com.google.android.material.badge.BadgeDrawable;
+import com.example.project_prm.model.Chats;
+import com.example.project_prm.model.Notification;
+import com.example.project_prm.model.User;
+import com.example.project_prm.util.SharedPreferencesKey;
+import com.example.project_prm.util.SharedPreferencesUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -30,7 +35,11 @@ public class HomeFragment extends Fragment {
 
     private BottomNavigationView bottomNavigationView;
 
+    private TextView tvBagde;
+
     private HomeController homeController;
+
+    private ArrayList<Notification> currentNotifications;
 
     private HomeCallBack homeCallBack;
 
@@ -58,14 +67,27 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView();
-        initAction();
-        initObserver();
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                initView();
+                initAction();
+                initObserver();
+            }
+        });
     }
 
     private void initView() {
         bottomNavigationView = getView().findViewById(R.id.bnvNavigation);
+        initTvBadge();
+        ((MainActivity) getActivity()).showTitleBar(true, "Chats");
         replaceFragment(ChatsFragment.newInstance("",""), "ChatsFragment");
+    }
+
+    private void initTvBadge() {
+        BottomNavigationItemView itemView = bottomNavigationView.findViewById(R.id.notification);
+        View badge = LayoutInflater.from(getContext()).inflate(R.layout.icon_badge_number_layout, itemView, true);
+        tvBagde = badge.findViewById(R.id.tvBadge);
     }
 
     private void initAction() {
@@ -73,12 +95,16 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.chats && getActivity().getSupportFragmentManager().findFragmentByTag(ChatsFragment.TAG) == null) {
+                    ((MainActivity) getActivity()).showTitleBar(true, "Chats");
                     replaceFragment(ChatsFragment.newInstance("", ""), "ChatsFragment"); // add chat fragment
                 } else if (item.getItemId() == R.id.setting && getActivity().getSupportFragmentManager().findFragmentByTag(SettingFragment.TAG) == null) {
+                    ((MainActivity) getActivity()).showTitleBar(true, "Setting");
                     replaceFragment(SettingFragment.newInstance(), "SettingFragment"); // add setting fragment
                 } else if (item.getItemId() == R.id.notification && getActivity().getSupportFragmentManager().findFragmentByTag(NotificationFragment.TAG) == null) {
-                    replaceFragment(NotificationFragment.newInstance("", ""), "NotificationFragment"); // add notification fragment
+                    ((MainActivity) getActivity()).showTitleBar(true, "Notifications");
+                    replaceFragment(NotificationFragment.newInstance(currentNotifications), "NotificationFragment"); // add notification fragment
                 } else if (item.getItemId() == R.id.friend && getActivity().getSupportFragmentManager().findFragmentByTag(FriendsFragment.TAG) == null ){
+                    ((MainActivity) getActivity()).showTitleBar(true, "Friends");
                     replaceFragment(FriendsFragment.newInstance("", ""), "FriendsFragment"); // add friend fragment
                 }
                 return true;
@@ -89,21 +115,51 @@ public class HomeFragment extends Fragment {
     private void initObserver() {
         homeCallBack = new HomeCallBack() {
             @Override
-            public void onNotificationResult(ArrayList<String> notification) {
-                initNotificationBadge(notification.size()); // testing code, remove later
+            public void onNotificationResult(boolean result, String message, ArrayList<Notification> notifications) {
+                currentNotifications = new ArrayList<>();
+                currentNotifications.clear();
+                currentNotifications.addAll(notifications);
+                updateNotificationBadge(currentNotifications.size());
+            }
+
+            @Override
+            public void onUserFriendResult(boolean result, String message, ArrayList<User> user) {
+
+            }
+
+            @Override
+            public void onChatUpdate(boolean result, String message, ArrayList<Chats> Chats) {
+
+            }
+
+            @Override
+            public void onUserProfile(boolean result, String message, User u) {
+
+            }
+
+            @Override
+            public void onLoading(boolean isLoading) {
+                ((MainActivity) getActivity()).showLoading(isLoading);
             }
         };
         homeController = new HomeController(homeCallBack);
-        homeController.getNotification();
+        getNotificationFromUserId();
     }
 
-    private void initNotificationBadge(int size) {
-        BottomNavigationItemView itemView = bottomNavigationView.findViewById(R.id.notification);
-        View badge = LayoutInflater.from(getContext()).inflate(R.layout.icon_badge_number_layout, itemView, true);
-        TextView tvBagde = badge.findViewById(R.id.tvBadge);
-        if (size > 9) {
+    private void getNotificationFromUserId() {
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
+        String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
+        homeController.getNotification(uid);
+    }
+    private void updateNotificationBadge(int size) {
+        Log.d("HaiLS", tvBagde.getText().toString());
+        if (size == 0) {
+            tvBagde.setVisibility(View.INVISIBLE);
+        } else if (size > 9) {
+            tvBagde.setVisibility(View.VISIBLE);
             tvBagde.setText("9+");
         } else {
+            tvBagde.setVisibility(View.VISIBLE);
             tvBagde.setText(String.valueOf(size));
         }
     }
