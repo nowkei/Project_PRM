@@ -85,7 +85,7 @@ public class LoginFragment extends Fragment {
         resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFragment(ForgetPasswordFragment.newInstance(""), ForgetPasswordFragment.TAG);
+                addFragment(ForgetPasswordFragment.newInstance(), ForgetPasswordFragment.TAG);
             }
         });
         tvSignUp.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +106,7 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(requireContext(), "Cannot contain spaces", Toast.LENGTH_LONG).show();
                 }
                 else{
-//                    loginController.login(email, password);
+                    loginController.login(email, password);
                 }
             }
         });
@@ -138,13 +138,14 @@ public class LoginFragment extends Fragment {
     private void initObserver() {
         loginCallback = new LoginCallback() {
             @Override
-            public void onLoginResult(boolean result, String message, String username, String email, String userID) {
+            public void onLoginResult(boolean result, String message, String username, String email, String userID, String pass) {
                 if (result) {
                     SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
 
                     sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.USERNAME, username);
                     sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.EMAIL, email);
                     sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.USERID, userID);
+                    sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.PASSWORD, pass);
 
                     replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG);
                 }

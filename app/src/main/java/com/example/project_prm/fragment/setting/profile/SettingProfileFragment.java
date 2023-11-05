@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +23,10 @@ import android.widget.Toast;
 import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.home.HomeFragment;
+import com.example.project_prm.fragment.login.LoginFragment;
 import com.example.project_prm.fragment.setting.DialogChangeUserImageFragment;
+import com.example.project_prm.fragment.setting.SettingCallback;
+import com.example.project_prm.fragment.setting.SettingController;
 import com.example.project_prm.model.Info;
 import com.example.project_prm.util.SharedPreferencesKey;
 import com.example.project_prm.util.SharedPreferencesUtil;
@@ -43,6 +47,7 @@ public class SettingProfileFragment extends Fragment {
     private TextView userEmail;
     private SettingProfileCallback settingProfileCallback;
     private SettingProfileController settingProfileController;
+    private SettingController settingController;
 
     private void initView() {
         btnSave = getView().findViewById(R.id.btnSaveData);
@@ -71,6 +76,7 @@ public class SettingProfileFragment extends Fragment {
                 String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
                 String username = sharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
                 String userEmail = sharedPreferencesUtil.getData(SharedPreferencesKey.EMAIL);
+                String currentPassword = sharedPreferencesUtil.getData(SharedPreferencesKey.PASSWORD);
                 String address = edtAddress.getText().toString();
                 String OldPassword = edtOldPassWord.getText().toString();
                 String NewPassword = edtNewPassWord.getText().toString();
@@ -78,11 +84,11 @@ public class SettingProfileFragment extends Fragment {
                 if((OldPassword.isEmpty() && NewPassword.isEmpty() && confirmPassword.isEmpty())
                         ||(!OldPassword.isEmpty() && !NewPassword.isEmpty()
                         && !confirmPassword.isEmpty() && NewPassword.equals(confirmPassword)
-                        && OldPassword.equals(settingProfileController.Oldpassword) && NewPassword.length()>=6)) {
+                        && OldPassword.equals(currentPassword) && NewPassword.length()>=6
+                        && !containsSpace(NewPassword))) {
                     settingProfileController.updateData(uid, username, userEmail, address, NewPassword);
                 }else {
-                    Toast.makeText(requireContext(), "New Password have to match", Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(requireContext(), R.string.incorrect_password, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -164,6 +170,14 @@ public class SettingProfileFragment extends Fragment {
             @Override
             public void onUpdateResult(boolean result, String message) {
                 if(result) {
+                    SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
+                    String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
+                    sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERID);
+                    sharedPreferencesUtil.deleteData(SharedPreferencesKey.EMAIL);
+                    sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERNAME);
+                    sharedPreferencesUtil.deleteData(SharedPreferencesKey.PASSWORD);
+                    settingController.logOut(uid);
+                    replaceFragment(LoginFragment.newInstance("",""), LoginFragment.TAG);
                     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
@@ -179,6 +193,7 @@ public class SettingProfileFragment extends Fragment {
             }
         };
         settingProfileController = new SettingProfileController(settingProfileCallback);
+        settingController = new SettingController();
         getUserProfileByID();
     }
 
@@ -240,6 +255,9 @@ public class SettingProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setting_profile, container, false);
+    }
+    private boolean containsSpace(String text) {
+        return text.contains(" ");
     }
     public static final String TAG = "SettingProfileFragment";
 }

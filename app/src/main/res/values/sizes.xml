@@ -10,7 +10,7 @@
     <dimen name="very_small_text">14sp</dimen>
     <dimen name="small_text">16sp</dimen>
     <dimen name="medium_text">20sp</dimen>
-    <dimen name="large_text">24sp</dimen>
+    <dimen name="large_text">26sp</dimen>
     <dimen name="title_text">30sp</dimen>
     <!-- end region-->
 
@@ -20,7 +20,7 @@
     <!-- end region -->
     <!-- height conners  -->
     <dimen name="layout_height_170dp">170dp</dimen>
-    <dimen name="image_user_layout_120dp">120dp</dimen>
+    <dimen name="layout_height_120dp">120dp</dimen>
     <dimen name="userName_text_Setting_36sp">36sp</dimen>
     <dimen name="conner_image_60dp">60dp</dimen>
     <!-- end region -->

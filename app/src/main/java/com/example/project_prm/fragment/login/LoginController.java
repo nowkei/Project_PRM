@@ -36,15 +36,15 @@ public class LoginController {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
                             if (task.isSuccessful()) {
-                                loginCallBack.onLoginResult(true, "Login success", task.getResult().getValue().toString(), email, userId);
+                                loginCallBack.onLoginResult(true, "Login success", task.getResult().getValue().toString(), email, userId, password);
                             } else {
-                                loginCallBack.onLoginResult(false, "Login fail, please try again", "", "", "");
+                                loginCallBack.onLoginResult(false, "Login fail, please try again", "", "", "", "");
                             }
                         }
                     });
                     databaseReferences.child("Users").child(userId).child("isOnline").setValue(true);
                 } else {
-                    loginCallBack.onLoginResult(false, "Login fail, please try again", "", "", "" );
+                    loginCallBack.onLoginResult(false, "Login fail, please try again", "", "", "", "" );
                 }
                 loginCallBack.onLoading(false);
             }

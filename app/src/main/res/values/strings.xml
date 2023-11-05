@@ -13,6 +13,8 @@
     <!-- Sign Up region-->
     <string name="button_signup_text">Sign Up</string>
     <string name="match_password">Passwords must match</string>
+    <string name="space_password">Password cannot contain spaces</string>
+    <string name="incorrect_password">Password is incorrect</string>
     <string name="empty_username">Enter your Username</string>
     <string name="empty_email">Enter your Email</string>
     <string name="empty_password">Enter your Password</string>
