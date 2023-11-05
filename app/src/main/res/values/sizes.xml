@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Login region -->
-    <dimen name="medium_button_size_height">60dp</dimen>
+    <dimen name="medium_button_size_height">55dp</dimen>
     <dimen name="medium_button_size_width">240dp</dimen>
     <dimen name = "cartView_Login_border">20dp</dimen>
     <!-- end region -->
@@ -17,5 +17,11 @@
     <!-- margin region -->
     <dimen name="margin_5dp">5dp</dimen>
     <dimen name="margin_20dp">20dp</dimen>
+    <!-- end region -->
+    <!-- height conners  -->
+    <dimen name="layout_height_170dp">170dp</dimen>
+    <dimen name="image_user_layout_120dp">120dp</dimen>
+    <dimen name="userName_text_Setting_36sp">36sp</dimen>
+    <dimen name="conner_image_60dp">60dp</dimen>
     <!-- end region -->
 </resources>

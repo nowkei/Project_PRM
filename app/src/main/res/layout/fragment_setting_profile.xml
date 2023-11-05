@@ -7,9 +7,9 @@
     android:background="@color/white">
 
     <ScrollView
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -18,24 +18,26 @@
 
             <Button
                 android:id="@+id/btnSaveData"
-                android:layout_width="120dp"
+                android:layout_width="@dimen/image_user_layout_120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
                 android:background="@drawable/bg"
                 android:text="Save"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="@dimen/medium_text"
                 android:textStyle="bold"
+                android:layout_marginVertical="@dimen/margin_20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtNewPassword" />
+                app:layout_constraintTop_toBottomOf="@+id/edtconfPassword"
+                app:layout_constraintVertical_bias="1.0" />
 
             <ImageView
                 android:id="@+id/imageBackground"
-                android:layout_width="0dp"
-                android:layout_height="170dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_height_170dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/userimage"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -58,8 +60,8 @@
 
                 <ImageView
                     android:id="@+id/userImage"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="@dimen/image_user_layout_120dp"
+                    android:layout_height="@dimen/image_user_layout_120dp"
                     android:layout_margin="0dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/userimage" />
@@ -77,21 +79,21 @@
                 app:layout_constraintTop_toBottomOf="@id/userImageCardView">
 
                 <TextView
-                    android:id="@+id/txtName"
+                    android:id="@+id/txtSettingName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="User Name"
-                    android:textSize="36sp" />
+                    android:textSize="@dimen/userName_text_Setting_36sp" />
 
                 <TextView
-                    android:id="@+id/txtEmail"
+                    android:id="@+id/txtSettingEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:gravity="center"
                     android:text="User email"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/medium_text" />
             </LinearLayout>
 
             <EditText
@@ -113,7 +115,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
+                android:layout_marginStart="28dp"
                 android:text="Address"
                 android:textSize="@dimen/medium_text"
                 android:textStyle="bold"
@@ -133,7 +135,6 @@
                 android:ems="10"
                 android:inputType="textPassword"
                 android:longClickable="false"
-                android:text="hop0103"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -143,7 +144,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
-                android:layout_marginTop="17dp"
                 android:text="Password"
                 android:textSize="@dimen/medium_text"
                 android:textStyle="bold"
@@ -156,7 +156,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
-                android:layout_marginTop="17dp"
                 android:text="New Password"
                 android:textSize="@dimen/medium_text"
                 android:textStyle="bold"
@@ -178,6 +177,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:text="Confirm password"
+                android:textSize="@dimen/medium_text"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtNewPassword" />
+
+            <EditText
+                android:id="@+id/edtconfPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/l_blue"
+                android:drawableRight="@drawable/baseline_visibility_off_24"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:longClickable="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
