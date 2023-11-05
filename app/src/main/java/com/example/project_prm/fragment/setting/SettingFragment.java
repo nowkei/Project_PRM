@@ -24,6 +24,7 @@ public class SettingFragment extends Fragment {
 
     private Button btnLogout;
     private Button btnSetting;
+    private  SettingController settingController;
 
     private void initView() {
         btnLogout = getView().findViewById(R.id.btnSaveData);
@@ -35,10 +36,12 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
+                String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
                 sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERID);
                 sharedPreferencesUtil.deleteData(SharedPreferencesKey.EMAIL);
                 sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERNAME);
-                replaceFragment(LoginFragment.newInstance("",""), "LoginFragment");
+                settingController.logOut(uid);
+                replaceFragment(LoginFragment.newInstance("",""), LoginFragment.TAG);
             }
         });
 
@@ -49,6 +52,10 @@ public class SettingFragment extends Fragment {
             }
         });
     }
+
+    private void initObserver() {
+        settingController = new SettingController();
+    }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.post(new Runnable() {
@@ -56,6 +63,7 @@ public class SettingFragment extends Fragment {
             public void run() {
                 initView();
                 initAction();
+                initObserver();
             }
         });
     }
@@ -66,7 +74,6 @@ public class SettingFragment extends Fragment {
     public static SettingFragment newInstance() {
         SettingFragment fragment = new SettingFragment();
         Bundle args = new Bundle();
-
         fragment.setArguments(args);
         return fragment;
     }

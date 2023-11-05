@@ -1,12 +1,7 @@
 package com.example.project_prm.fragment.login;
 
-import android.os.Handler;
-import android.os.Looper;
-
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 
-import com.example.project_prm.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -15,8 +10,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.HashMap;
 
 
 public class LoginController {
@@ -42,12 +36,16 @@ public class LoginController {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
                             if (task.isSuccessful()) {
-                                loginCallBack.onLoginResult(true, "Login success", task.getResult().getKey(), email, userId);
+                                loginCallBack.onLoginResult(true, "Login success", task.getResult().getValue().toString(), email, userId);
                             } else {
                                 loginCallBack.onLoginResult(false, "Login fail, please try again", "", "", "");
                             }
                         }
                     });
+
+                    HashMap<String, Boolean> hashMap = new HashMap<>();
+                    hashMap.put("isLogin", true);
+                    databaseReferences.child("Users").child(userId).setValue(hashMap);
                 } else {
                     loginCallBack.onLoginResult(false, "Login fail, please try again", "", "", "" );
                 }

@@ -2,6 +2,7 @@ package com.example.project_prm.fragment.login;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -53,9 +54,14 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView();
-        initAction();
-        initObserver();
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                initView();
+                initAction();
+                initObserver();
+            }
+        });
     }
 
     private void initView() {
@@ -85,9 +91,7 @@ public class LoginFragment extends Fragment {
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                replaceFragment(SignUpFragment.newInstance("","", "", ""), SignUpFragment.TAG);
-
+                addFragment(SignUpFragment.newInstance("","", "", ""), SignUpFragment.TAG);
             }
         });
 

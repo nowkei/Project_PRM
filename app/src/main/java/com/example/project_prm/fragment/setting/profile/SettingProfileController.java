@@ -1,10 +1,8 @@
 package com.example.project_prm.fragment.setting.profile;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
-import com.example.project_prm.model.User;
+import com.example.project_prm.model.Info;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -31,16 +29,16 @@ public class SettingProfileController {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
-                    User user = new User();
+                    Info info = new Info();
                     Map<String,String> data = (HashMap<String, String>) task.getResult().getValue();
-                    user.setUid(uid);
-                    user.setAddress(data.get("address"));
-                    user.setEmail(data.get("email"));
-                    user.setPhoneNumber(data.get("phoneNumber"));
-                    user.setPassword(data.get("password"));
-                    user.setUsername(data.get("userName"));
+                    info.setUid(uid);
+                    info.setAddress(data.get("address"));
+                    info.setEmail(data.get("email"));
+                    info.setPhoneNumber(data.get("phoneNumber"));
+                    info.setPassword(data.get("password"));
+                    info.setUsername(data.get("userName"));
 
-                    settingProfileCallback.onGetUserResult(true, "Get user profile success", user);
+                    settingProfileCallback.onGetUserResult(true, "Get user profile success", info);
                 } else {
                     settingProfileCallback.onGetUserResult(false, "Login fail, please try again", null);
                 }

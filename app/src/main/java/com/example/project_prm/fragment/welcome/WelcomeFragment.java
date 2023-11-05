@@ -45,16 +45,23 @@ public class WelcomeFragment extends Fragment {
         Sign_Up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 addFragment(SignUpFragment.newInstance("" , "", "", ""), "SignUpFragment");
-
             }
         });
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView();
-        initAction();
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                initView();
+                initAction();
+                initObserver();
+            }
+        });
+    }
+
+    private void initObserver() {
     }
 
     // TODO: Rename and change types and number of parameters
@@ -67,8 +74,13 @@ public class WelcomeFragment extends Fragment {
     private void addFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.anim_slide_in,
+                R.anim.anim_fade_out,
+                R.anim.anim_fade_in,
+                R.anim.anim_slide_out);
+        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.add(R.id.fragmentContainer, fragment, tag);
-        fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
     }
     private void replaceFragment(Fragment fragment, String tag) {
