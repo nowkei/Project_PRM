@@ -33,12 +33,14 @@ public class AdapterChats extends RecyclerView.Adapter<AdapterChats.WorldViewHol
         private TextView chatTitle;
         private TextView chatContent;
         private TextView chatTime;
+        private  View view;
         public WorldViewHolder(@NonNull View view) {
             super(view);
             img_chatAva = (ImageView) view.findViewById(R.id.img_chatAvatar);
             chatTitle = (TextView) view.findViewById(R.id.chat_title);
             chatContent = (TextView) view.findViewById(R.id.chat_content);
             chatTime = (TextView) view.findViewById(R.id.chat_time);
+            this.view = view;
         }
 
         public ImageView getImg_chatAva() {
@@ -47,6 +49,10 @@ public class AdapterChats extends RecyclerView.Adapter<AdapterChats.WorldViewHol
 
         public TextView getChatTitle() {
             return chatTitle;
+        }
+
+        public View getView() {
+            return view;
         }
 
         public TextView getChatContent() {
@@ -70,6 +76,7 @@ public class AdapterChats extends RecyclerView.Adapter<AdapterChats.WorldViewHol
         holder.getChatContent().setText(chats.get(position).getChatContent());
         holder.getChatTitle().setText(chats.get(position).getChatTitle());
         holder.getChatTime().setText(chats.get(position).getChatTime());
+
 
     }
 }
