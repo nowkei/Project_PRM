@@ -5,9 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.io.Serializable;
-
-public class User implements Parcelable {
+public class Info implements Parcelable {
 
     private String uid;
     private String username;
@@ -17,7 +15,7 @@ public class User implements Parcelable {
     private String avatar;
     private String address;
 
-    protected User(Parcel in) {
+    protected Info(Parcel in) {
         uid = in.readString();
         username = in.readString();
         password = in.readString();
@@ -27,15 +25,15 @@ public class User implements Parcelable {
         address = in.readString();
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
+    public static final Creator<Info> CREATOR = new Creator<Info>() {
         @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
+        public Info createFromParcel(Parcel in) {
+            return new Info(in);
         }
 
         @Override
-        public User[] newArray(int size) {
-            return new User[size];
+        public Info[] newArray(int size) {
+            return new Info[size];
         }
     };
 
@@ -47,7 +45,7 @@ public class User implements Parcelable {
         this.address = address;
     }
 
-    public User() {
+    public Info() {
 
     }
 
@@ -59,7 +57,7 @@ public class User implements Parcelable {
         this.avatar = avatar;
     }
 
-    public User(String username, String password) {
+    public Info(String username, String password) {
         this.username = username;
         this.password = password;
     }

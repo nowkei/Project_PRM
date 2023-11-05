@@ -19,10 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.home.HomeFragment;
 import com.example.project_prm.fragment.setting.DialogChangeUserImageFragment;
-import com.example.project_prm.model.User;
+import com.example.project_prm.model.Info;
 import com.example.project_prm.util.SharedPreferencesKey;
 import com.example.project_prm.util.SharedPreferencesUtil;
 
@@ -121,20 +122,27 @@ public class SettingProfileFragment extends Fragment {
     private void initObserver() {
         settingProfileCallback = new SettingProfileCallback() {
             @Override
-            public void onGetUserResult(boolean result, String message, User u) {
-                edtOldPassWord.setText(u.getPassword());
-                address.setText(u.getAddress());
-                userName.setText(u.getUsername());
-                userEmail.setText(u.getEmail());
+            public void onGetUserResult(boolean result, String message, Info u) {
+                getUserInfo(u);
             }
 
             @Override
             public void onLoading(boolean isLoading) {
-
+                ((MainActivity) getActivity()).showLoading(isLoading);
             }
         };
         settingProfileController = new SettingProfileController(settingProfileCallback);
         getUserProfileByID();
+    }
+
+    private void getUserInfo(Info u) {
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
+        String email = sharedPreferencesUtil.getData(SharedPreferencesKey.EMAIL);
+        String name = sharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
+        userEmail.setText(email);
+        userName.setText(name);
+        edtOldPassWord.setText(u.getPassword());
+        address.setText(u.getAddress());
     }
 
     private void getUserProfileByID() {

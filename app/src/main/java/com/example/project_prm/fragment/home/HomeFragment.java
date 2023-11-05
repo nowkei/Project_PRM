@@ -1,7 +1,6 @@
 package com.example.project_prm.fragment.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +20,9 @@ import com.example.project_prm.fragment.friends.FriendsFragment;
 import com.example.project_prm.fragment.notification.NotificationFragment;
 import com.example.project_prm.fragment.setting.SettingFragment;
 import com.example.project_prm.model.Chats;
+import com.example.project_prm.model.Friend;
 import com.example.project_prm.model.Notification;
-import com.example.project_prm.model.User;
+import com.example.project_prm.model.Info;
 import com.example.project_prm.util.SharedPreferencesKey;
 import com.example.project_prm.util.SharedPreferencesUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -40,6 +40,8 @@ public class HomeFragment extends Fragment {
     private HomeController homeController;
 
     private ArrayList<Notification> currentNotifications;
+
+    private ArrayList<Friend> currentFriends;
 
     private HomeCallBack homeCallBack;
 
@@ -96,16 +98,16 @@ public class HomeFragment extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.chats && getActivity().getSupportFragmentManager().findFragmentByTag(ChatsFragment.TAG) == null) {
                     ((MainActivity) getActivity()).showTitleBar(true, "Chats");
-                    replaceFragment(ChatsFragment.newInstance("", ""), "ChatsFragment"); // add chat fragment
+                    replaceFragment(ChatsFragment.newInstance("", ""), ChatsFragment.TAG); // add chat fragment
                 } else if (item.getItemId() == R.id.setting && getActivity().getSupportFragmentManager().findFragmentByTag(SettingFragment.TAG) == null) {
                     ((MainActivity) getActivity()).showTitleBar(true, "Setting");
-                    replaceFragment(SettingFragment.newInstance(), "SettingFragment"); // add setting fragment
+                    replaceFragment(SettingFragment.newInstance(), SettingFragment.TAG); // add setting fragment
                 } else if (item.getItemId() == R.id.notification && getActivity().getSupportFragmentManager().findFragmentByTag(NotificationFragment.TAG) == null) {
                     ((MainActivity) getActivity()).showTitleBar(true, "Notifications");
-                    replaceFragment(NotificationFragment.newInstance(currentNotifications), "NotificationFragment"); // add notification fragment
+                    replaceFragment(NotificationFragment.newInstance(currentNotifications), NotificationFragment.TAG); // add notification fragment
                 } else if (item.getItemId() == R.id.friend && getActivity().getSupportFragmentManager().findFragmentByTag(FriendsFragment.TAG) == null ){
                     ((MainActivity) getActivity()).showTitleBar(true, "Friends");
-                    replaceFragment(FriendsFragment.newInstance("", ""), "FriendsFragment"); // add friend fragment
+                    replaceFragment(FriendsFragment.newInstance(currentFriends), FriendsFragment.TAG); // add friend fragment
                 }
                 return true;
             }
@@ -123,8 +125,10 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onUserFriendResult(boolean result, String message, ArrayList<User> user) {
-
+            public void onUserFriendResult(boolean result, String message, ArrayList<Friend> friends) {
+                currentFriends = new ArrayList<>();
+                currentFriends.clear();
+                currentFriends.addAll(friends);
             }
 
             @Override
@@ -133,7 +137,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onUserProfile(boolean result, String message, User u) {
+            public void onUserProfile(boolean result, String message, Info u) {
 
             }
 
@@ -144,6 +148,7 @@ public class HomeFragment extends Fragment {
         };
         homeController = new HomeController(homeCallBack);
         getNotificationFromUserId();
+        getFriendsFromUserId();
     }
 
     private void getNotificationFromUserId() {
@@ -151,8 +156,14 @@ public class HomeFragment extends Fragment {
         String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
         homeController.getNotification(uid);
     }
+
+    private void getFriendsFromUserId() {
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
+        String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
+        homeController.getFriends(uid);
+    }
+
     private void updateNotificationBadge(int size) {
-        Log.d("HaiLS", tvBagde.getText().toString());
         if (size == 0) {
             tvBagde.setVisibility(View.INVISIBLE);
         } else if (size > 9) {

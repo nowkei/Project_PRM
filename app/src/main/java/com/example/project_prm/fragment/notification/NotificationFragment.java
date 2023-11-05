@@ -23,6 +23,8 @@ import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.component.DialogLoadingFragment;
 import com.example.project_prm.model.Notification;
+import com.example.project_prm.util.SharedPreferencesKey;
+import com.example.project_prm.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 
@@ -69,7 +71,6 @@ public class NotificationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            Log.d("HaiLS", getArguments().getParcelableArrayList(NOTIFICATIONS).toString());
             notifications = getArguments().getParcelableArrayList(NOTIFICATIONS);
         }
     }
@@ -94,6 +95,13 @@ public class NotificationFragment extends Fragment {
             }
         };
         notificationController = new NotificationController(notificationCallBack);
+        getNotificationFromUserId();
+    }
+
+    private void getNotificationFromUserId() {
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
+        String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
+        notificationController.getNotification(uid);
     }
 
     private void initRecycleView(ArrayList<Notification> notifications) {
@@ -107,7 +115,7 @@ public class NotificationFragment extends Fragment {
                 }
             }
         };
-        adapter = new AdapterNotification(notifications, callBack);
+        adapter = new AdapterNotification(notifications, callBack, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false ));
         recyclerView.setAdapter(adapter);
     }

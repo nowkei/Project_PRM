@@ -1,6 +1,7 @@
 package com.example.project_prm.fragment.notification;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.project_prm.R;
 import com.example.project_prm.model.Notification;
 
@@ -18,11 +20,13 @@ import java.util.ArrayList;
 
 public class AdapterNotification extends RecyclerView.Adapter<AdapterNotification.WorldViewHolder> {
 
-    ArrayList<Notification> notifications;
+    private ArrayList<Notification> notifications;
 
-    NotificationItemCallBack notificationItemCallBack;
+    private NotificationItemCallBack notificationItemCallBack;
 
-    public AdapterNotification(ArrayList<Notification> notifications, NotificationItemCallBack notificationItemCallBack) {
+    private Context context;
+
+    public AdapterNotification(ArrayList<Notification> notifications, NotificationItemCallBack notificationItemCallBack, Context context) {
         this.notifications = notifications;
         this.notificationItemCallBack = notificationItemCallBack;
     }
@@ -85,6 +89,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
     public void onBindViewHolder(@NonNull WorldViewHolder holder, @SuppressLint("RecyclerView") int position) {
        holder.getTvUsername().setText(notifications.get(position).getUsername());
        holder.getTvRq().setText(notifications.get(position).getContent());
+        Glide.with(context).load("").error(R.drawable.userimage).circleCrop().into(holder.getImgView());
        holder.getBtnAcp().setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
