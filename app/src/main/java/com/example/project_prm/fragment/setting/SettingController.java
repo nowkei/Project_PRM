@@ -20,8 +20,7 @@ public class SettingController {
         firebaseAuth.signOut();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         HashMap<String, Boolean> hashMap = new HashMap<>();
-        hashMap.put("isLogin", false);
-        databaseReference.child("Users").child(uid).setValue(hashMap);
+        databaseReference.child("Users").child(uid).child("isOnline").setValue(false);
     }
 
 

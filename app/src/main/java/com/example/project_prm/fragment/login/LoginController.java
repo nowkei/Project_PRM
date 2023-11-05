@@ -42,10 +42,7 @@ public class LoginController {
                             }
                         }
                     });
-
-                    HashMap<String, Boolean> hashMap = new HashMap<>();
-                    hashMap.put("isLogin", true);
-                    databaseReferences.child("Users").child(userId).setValue(hashMap);
+                    databaseReferences.child("Users").child(userId).child("isOnline").setValue(true);
                 } else {
                     loginCallBack.onLoginResult(false, "Login fail, please try again", "", "", "" );
                 }
