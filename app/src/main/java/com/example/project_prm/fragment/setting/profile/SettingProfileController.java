@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SettingProfileController {
-    public String Oldpassword ;
     private SettingProfileCallback settingProfileCallback;
 
     private DatabaseReference databaseReferences;
@@ -29,22 +28,19 @@ public class SettingProfileController {
     }
     public  void updateData(String uid,String username,String userEmail, String adderss, String newPassword){
         settingProfileCallback.onLoading(true);
-        firebaseAuth.getCurrentUser().updatePassword(newPassword);
+        if(!newPassword.isEmpty()){
+            firebaseAuth.getCurrentUser().updatePassword(newPassword);
+        }
         String userId = uid;
         databaseReferences = FirebaseDatabase.getInstance().getReference();
         HashMap<String, String> hashMap = new HashMap<>();
-        if(!newPassword.isEmpty()){
-            hashMap.put("password", newPassword);
-        } else{
-            hashMap.put("password", Oldpassword);
 
-        }
         hashMap.put("address", adderss);
         hashMap.put("userName", username);
         hashMap.put("email", userEmail);
         hashMap.put("avatar", "");
         hashMap.put("phoneNumber", "");
-        hashMap.put("userID", userId);
+        hashMap.put("userId", userId);
         databaseReferences.child("Users").child(userId).child("info").setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -52,7 +48,6 @@ public class SettingProfileController {
                     settingProfileCallback.onUpdateResult(true, "Update success");
                 } else {
                     settingProfileCallback.onUpdateResult(false, "Update fail, please try again!");
-
                 }
                 settingProfileCallback.onLoading(false);
             }
@@ -71,9 +66,7 @@ public class SettingProfileController {
                     info.setAddress(data.get("address"));
                     info.setEmail(data.get("email"));
                     info.setPhoneNumber(data.get("phoneNumber"));
-                    info.setPassword(data.get("password"));
                     info.setUsername(data.get("userName"));
-                    Oldpassword = data.get("password").toString();
                     settingProfileCallback.onGetUserResult(true, "Get user profile success", info);
                 } else {
                     settingProfileCallback.onGetUserResult(false, "Login fail, please try again", null);

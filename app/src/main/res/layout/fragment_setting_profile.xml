@@ -18,7 +18,7 @@
 
             <Button
                 android:id="@+id/btnSaveData"
-                android:layout_width="@dimen/image_user_layout_120dp"
+                android:layout_width="@dimen/layout_height_120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/bg"
@@ -60,8 +60,8 @@
 
                 <ImageView
                     android:id="@+id/userImage"
-                    android:layout_width="@dimen/image_user_layout_120dp"
-                    android:layout_height="@dimen/image_user_layout_120dp"
+                    android:layout_width="@dimen/layout_height_120dp"
+                    android:layout_height="@dimen/layout_height_120dp"
                     android:layout_margin="0dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/userimage" />

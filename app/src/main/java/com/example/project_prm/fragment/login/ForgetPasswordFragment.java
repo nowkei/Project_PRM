@@ -11,25 +11,36 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.setting.DialogChangeUserImageFragment;
+import com.example.project_prm.fragment.setting.SettingController;
+import com.example.project_prm.fragment.setting.profile.SettingProfileCallback;
+import com.example.project_prm.fragment.setting.profile.SettingProfileController;
+import com.example.project_prm.model.Info;
+import com.example.project_prm.util.SharedPreferencesKey;
+import com.example.project_prm.util.SharedPreferencesUtil;
 
 
 public class ForgetPasswordFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-
-
-    private String mParam1;
-
+    private EditText email;
+    private Button confirmEmail;
     private TextView back;
+    private ForgetPasswordController forgetPasswordController;
+    private ForgetPasswordCallBack forgetPasswordCallBack;
     public ForgetPasswordFragment() {
         // Required empty public constructor
     }
 
     private void initView() {
+        email = getView().findViewById(R.id.enterEmail);
+        confirmEmail = getView().findViewById(R.id.btnResetPassword);
         back = getView().findViewById(R.id.Back);
     }
 
@@ -37,15 +48,21 @@ public class ForgetPasswordFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 replaceFragment(LoginFragment.newInstance("", ""), LoginFragment.TAG);
             }
         });
-    };
-    public static ForgetPasswordFragment newInstance(String param1) {
+        confirmEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sendEmail = email.getText().toString();
+                forgetPasswordController.sendEmail(sendEmail);
+            }
+        });
+    }
+    public static ForgetPasswordFragment newInstance() {
         ForgetPasswordFragment fragment = new ForgetPasswordFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,9 +71,26 @@ public class ForgetPasswordFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
 
         }
+    }
+    private void initObserver() {
+        forgetPasswordCallBack = new ForgetPasswordCallBack() {
+            @Override
+            public void onSendEmailResult(boolean result, String message) {
+                if(result) {
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onLoading(boolean isLoading) {
+                ((MainActivity) getActivity()).showLoading(isLoading);
+            }
+        };
+        forgetPasswordController = new ForgetPasswordController(forgetPasswordCallBack);
+
     }
     private void addFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -93,7 +127,7 @@ public class ForgetPasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initView();
         initAction();
-        super.onViewCreated(view, savedInstanceState);
+        initObserver();
     }
 
     public static final String TAG = "ForgetPasswordFragment";
