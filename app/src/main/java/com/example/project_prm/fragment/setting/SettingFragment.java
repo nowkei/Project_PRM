@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
@@ -26,9 +27,19 @@ public class SettingFragment extends Fragment {
     private Button btnSetting;
     private  SettingController settingController;
 
+    private TextView username;
+    private TextView userEmail;
     private void initView() {
         btnLogout = getView().findViewById(R.id.btnSaveData);
         btnSetting = getView().findViewById(R.id.btnSettingProfile);
+        username = getView().findViewById(R.id.txtName);
+        userEmail = getView().findViewById(R.id.txtEmail);
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
+        String userName = sharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
+        String email = sharedPreferencesUtil.getData(SharedPreferencesKey.EMAIL);
+
+        username.setText(userName);
+        userEmail.setText(email);
     }
 
     private void initAction(){

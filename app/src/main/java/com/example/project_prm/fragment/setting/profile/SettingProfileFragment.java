@@ -36,8 +36,9 @@ public class SettingProfileFragment extends Fragment {
     private EditText edtOldPassWord;
     private boolean passVisible;
     private EditText edtNewPassWord;
+    private EditText edtConfPassWord;
     private ImageView imgUserImage;
-    private EditText address;
+    private EditText edtAddress;
     private TextView userName;
     private TextView userEmail;
     private SettingProfileCallback settingProfileCallback;
@@ -47,10 +48,11 @@ public class SettingProfileFragment extends Fragment {
         btnSave = getView().findViewById(R.id.btnSaveData);
         edtOldPassWord = getView().findViewById(R.id.edtOldPassword);
         edtNewPassWord = getView().findViewById(R.id.edtNewPassword);
+        edtConfPassWord = getView().findViewById(R.id.edtconfPassword);
         imgUserImage = getView().findViewById(R.id.userImage);
-        address = getView().findViewById(R.id.edtAddress);
-        userName = getView().findViewById(R.id.txtName);
-        userEmail = getView().findViewById(R.id.txtEmail);
+        edtAddress = getView().findViewById(R.id.edtAddress);
+        userName = getView().findViewById(R.id.txtSettingName);
+        userEmail = getView().findViewById(R.id.txtSettingEmail);
     }
 
     private void initAction(){
@@ -65,8 +67,23 @@ public class SettingProfileFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(requireContext(), "Update Successful", Toast.LENGTH_LONG).show();
-                replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG);
+                SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
+                String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
+                String username = sharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
+                String userEmail = sharedPreferencesUtil.getData(SharedPreferencesKey.EMAIL);
+                String address = edtAddress.getText().toString();
+                String OldPassword = edtOldPassWord.getText().toString();
+                String NewPassword = edtNewPassWord.getText().toString();
+                String confirmPassword = edtConfPassWord.getText().toString();
+                if((OldPassword.isEmpty() && NewPassword.isEmpty() && confirmPassword.isEmpty())
+                        ||(!OldPassword.isEmpty() && !NewPassword.isEmpty()
+                        && !confirmPassword.isEmpty() && NewPassword.equals(confirmPassword)
+                        && OldPassword.equals(settingProfileController.Oldpassword) && NewPassword.length()>=6)) {
+                    settingProfileController.updateData(uid, username, userEmail, address, NewPassword);
+                }else {
+                    Toast.makeText(requireContext(), "New Password have to match", Toast.LENGTH_LONG).show();
+
+                }
             }
         });
 
@@ -94,6 +111,29 @@ public class SettingProfileFragment extends Fragment {
             }
         });
 
+        edtConfPassWord.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int Right = 2 ;
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    if(event.getRawX() >= edtConfPassWord.getRight()-edtConfPassWord.getCompoundDrawables()[Right].getBounds().width()){
+                        int selection = edtConfPassWord.getSelectionEnd();
+                        if(passVisible){
+                            edtConfPassWord.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0, R.drawable.baseline_visibility_off_24,0);
+                            edtConfPassWord.setTransformationMethod(new PasswordTransformationMethod());
+                            passVisible = false;
+                        }else{
+                            edtConfPassWord.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0, R.drawable.baseline_visibility_24,0);
+                            edtConfPassWord.setTransformationMethod(null);
+                            passVisible = true;
+                        }
+                        edtConfPassWord.setSelection(selection);
+                        return true ;
+                    }
+                }
+                return false;
+            }
+        });
         edtNewPassWord.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -122,6 +162,13 @@ public class SettingProfileFragment extends Fragment {
     private void initObserver() {
         settingProfileCallback = new SettingProfileCallback() {
             @Override
+            public void onUpdateResult(boolean result, String message) {
+                if(result) {
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+                }
+            }
             public void onGetUserResult(boolean result, String message, Info u) {
                 getUserInfo(u);
             }
@@ -141,8 +188,8 @@ public class SettingProfileFragment extends Fragment {
         String name = sharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
         userEmail.setText(email);
         userName.setText(name);
-        edtOldPassWord.setText(u.getPassword());
-        address.setText(u.getAddress());
+        //edtOldPassWord.setText(u.getPassword());
+        edtAddress.setText(u.getAddress());
     }
 
     private void getUserProfileByID() {

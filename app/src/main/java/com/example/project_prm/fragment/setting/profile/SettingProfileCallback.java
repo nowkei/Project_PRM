@@ -3,6 +3,7 @@ package com.example.project_prm.fragment.setting.profile;
 import com.example.project_prm.model.Info;
 
 public interface SettingProfileCallback {
+    void onUpdateResult(boolean result, String message);
 
     void onGetUserResult(boolean result, String message, Info u);
 

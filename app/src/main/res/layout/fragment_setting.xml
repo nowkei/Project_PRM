@@ -13,22 +13,22 @@
 
         <Button
             android:id="@+id/btnSaveData"
-            android:layout_width="120dp"
+            android:layout_width="@dimen/image_user_layout_120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="42dp"
             android:background="@drawable/bg"
             android:text="Logout"
             android:textColor="@color/red"
-            android:textSize="20sp"
+            android:textSize="@dimen/medium_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/imageBackground"
-            android:layout_width="0dp"
-            android:layout_height="170dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_height_170dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
             android:id="@+id/userImageCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="60dp"
+            app:cardCornerRadius="@dimen/conner_image_60dp"
             app:cardPreventCornerOverlap="true"
             app:layout_constraintBottom_toBottomOf="@id/imageBackground"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,6 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="0dp"
-                android:contentDescription=""
                 android:scaleType="centerCrop"
                 android:src="@drawable/userimage"/>
         </com.google.android.material.card.MaterialCardView>
@@ -76,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="User Name"
-                android:textSize="36sp" />
+                android:textSize="@dimen/userName_text_Setting_36sp" />
 
             <TextView
                 android:id="@+id/txtEmail"
@@ -85,12 +84,12 @@
                 android:layout_marginTop="12dp"
                 android:gravity="center"
                 android:text="User email"
-                android:textSize="20sp" />
+                android:textSize="@dimen/medium_text" />
 
             <Button
                 android:id="@+id/btnShowFriend"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/medium_button_size_height"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="62dp"
                 android:layout_marginEnd="24dp"
@@ -102,7 +101,7 @@
             <Button
                 android:id="@+id/btnSettingProfile"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/medium_button_size_height"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="24dp"
