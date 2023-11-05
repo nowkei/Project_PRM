@@ -32,7 +32,7 @@ public class LoginFragment extends Fragment {
 
     private EditText edtPassword;
     private boolean passVisible;
-    private EditText edtUsername;
+    private EditText edtEmail;
     private Button btnLogin;
     private TextView tvSignUp;
     private LoginController loginController;
@@ -59,12 +59,12 @@ public class LoginFragment extends Fragment {
 
     private void initView() {
         btnLogin = getView().findViewById(R.id.btnLogin);
-        edtUsername = getView().findViewById(R.id.edtUsername);
+        edtEmail   = getView().findViewById(R.id.edtUsername);
         edtPassword = getView().findViewById(R.id.edtPassword);
         tvSignUp = getView().findViewById(R.id.signUp);
 
         if (!getArguments().getString(USERNAME).isEmpty() || getArguments().getString(USERNAME) != null) {
-            edtUsername.setText(getArguments().getString(USERNAME));
+            edtEmail.setText(getArguments().getString(USERNAME));
             if (!getArguments().getString(PASSWORD).isEmpty() || getArguments().getString(PASSWORD) != null) {
                 edtPassword.setText(getArguments().getString(PASSWORD));
             }
@@ -85,12 +85,15 @@ public class LoginFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = edtUsername.getText().toString();
+                String email = edtEmail.getText().toString();
                 String password = edtPassword.getText().toString();
-                if(username.isEmpty() || password.isEmpty()){
+                if(email.isEmpty() || password.isEmpty()){
                     Toast.makeText(requireContext(), "Please enter your username and password", Toast.LENGTH_LONG).show();
-                }else{
-                    loginController.login(username, password);
+                } if (containsSpace(email) || containsSpace(password)) {
+                    Toast.makeText(requireContext(), "Cannot contain spaces", Toast.LENGTH_LONG).show();
+                }
+                else{
+//                    loginController.login(email, password);
                 }
             }
         });
@@ -192,4 +195,7 @@ public class LoginFragment extends Fragment {
     public static final String TAG = "LoginFragment";
     private static final String PASSWORD = "LoginPassword";
     private static final String USERNAME = "LoginUsername";
+    private boolean containsSpace(String text) {
+        return text.contains(" ");
+    }
 }

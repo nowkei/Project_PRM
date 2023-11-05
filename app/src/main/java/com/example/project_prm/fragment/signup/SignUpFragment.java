@@ -80,26 +80,37 @@ public class SignUpFragment extends Fragment {
                 String email = edtEmail.getText().toString();
                 String password = edtPassword.getText().toString();
                 String cfPassword = edtCfPassword.getText().toString();
-                if (username.isEmpty()) {
-                    Toast.makeText(requireContext(), R.string.empty_username, Toast.LENGTH_LONG).show();
+                if (containsSpace(username)) {
+                    Toast.makeText(requireContext(), "Username cannot contain spaces", Toast.LENGTH_LONG).show();
+                    return;
                 }
-                if (email.isEmpty()) {
-                    Toast.makeText(requireContext(), R.string.empty_email, Toast.LENGTH_LONG).show();
+
+                if (containsSpace(email)) {
+                    Toast.makeText(requireContext(), "Email cannot contain spaces", Toast.LENGTH_LONG).show();
+                    return;
                 }
+
                 if (!isValidEmail(email)) {
                     Toast.makeText(requireContext(), R.string.validate_email, Toast.LENGTH_LONG).show();
+                    return;
                 }
 
-                if (password.isEmpty()) {
+                if (containsSpace(password)) {
+                    Toast.makeText(requireContext(), "Password cannot contain spaces", Toast.LENGTH_LONG).show();
+                    return;
+                } else if (password.isEmpty()) {
                     Toast.makeText(requireContext(), R.string.empty_password, Toast.LENGTH_LONG).show();
-
+                    return;
                 } else if (password.length() < 6) {
                     Toast.makeText(requireContext(), R.string.validate_password, Toast.LENGTH_LONG).show();
+                    return;
                 }
 
-                if (cfPassword.isEmpty()) {
-                    Toast.makeText(requireContext(), R.string.empty_confirmPassword, Toast.LENGTH_LONG).show();
+                if (containsSpace(cfPassword)) {
+                    Toast.makeText(requireContext(), "Confirm Password cannot contain spaces", Toast.LENGTH_LONG).show();
+                    return;
                 }
+
                 if (password.equals(cfPassword)) {
                     signUpController.signUp(username, email, password);
                 } else {
@@ -217,5 +228,8 @@ public class SignUpFragment extends Fragment {
     private boolean isValidEmail(String email) {
         String emailPattern = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}";
         return email.matches(emailPattern);
+    }
+    private boolean containsSpace(String text) {
+        return text.contains(" ");
     }
 }
