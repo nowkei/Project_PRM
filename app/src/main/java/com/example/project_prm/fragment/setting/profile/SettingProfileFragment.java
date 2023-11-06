@@ -24,9 +24,9 @@ import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.home.HomeFragment;
 import com.example.project_prm.fragment.login.LoginFragment;
-import com.example.project_prm.fragment.setting.DialogChangeUserImageFragment;
 import com.example.project_prm.fragment.setting.SettingCallback;
 import com.example.project_prm.fragment.setting.SettingController;
+import com.example.project_prm.fragment.setting.DialogChangeUserImage.DialogChangeUserImageFragment;
 import com.example.project_prm.model.Info;
 import com.example.project_prm.util.SharedPreferencesKey;
 import com.example.project_prm.util.SharedPreferencesUtil;
@@ -66,6 +66,7 @@ public class SettingProfileFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DialogChangeUserImageFragment changeUserImageFragment = new DialogChangeUserImageFragment();
+                changeUserImageFragment.setOnImageCaptureListener((MainActivity) getActivity());
                 changeUserImageFragment.show(fragmentManager, DialogChangeUserImageFragment.TAG);
             }
         });

@@ -58,4 +58,36 @@ public class NotificationController {
         });
     }
 
+    public void declineNotification(String targetUid, String notificationUid) {
+        DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference targetUserReference = usersReference.child(targetUid);
+        targetUserReference.child("notifications").orderByChild("uid").equalTo(notificationUid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            snapshot.getRef().removeValue();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Xử lý lỗi nếu cần
+                    }
+                });
+
+        targetUserReference.child("sendRequests").orderByChild("uid").equalTo(notificationUid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            snapshot.getRef().removeValue();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Xử lý lỗi nếu cần
+                    }
+                });
+    }
+
 }
