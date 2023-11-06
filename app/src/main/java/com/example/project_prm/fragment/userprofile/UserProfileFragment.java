@@ -2,48 +2,48 @@ package com.example.project_prm.fragment.userprofile;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
+import com.example.project_prm.model.Info;
+import com.example.project_prm.util.SharedPreferencesKey;
+import com.example.project_prm.util.SharedPreferencesUtil;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UserProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class UserProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private Button btnChatOrAddFriend;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ImageView imvAvatar;
 
-    public UserProfileFragment() {
-        // Required empty public constructor
-    }
+    private ImageView imvBackground;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UserProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static UserProfileFragment newInstance(String param1, String param2) {
+    private TextView tvUsername;
+
+    private TextView tvEmail;
+
+    private UserProfileController userProfileController;
+
+    private TextView tvAlreadyAddFriend;
+
+    public UserProfileFragment() {}
+    public static UserProfileFragment newInstance(Info info) {
         UserProfileFragment fragment = new UserProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(OTHER_INFO, info);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,9 +52,74 @@ public class UserProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                initView();
+                initAction();
+                initObserver();
+            }
+        });
+    }
+
+    private void initView() {
+        btnChatOrAddFriend = getView().findViewById(R.id.btnChatOrAddFriend);
+        imvBackground = getView().findViewById(R.id.imvOtherProfileBackground);
+        imvAvatar = getView().findViewById(R.id.imvOtherUserImage);
+        tvUsername = getView().findViewById(R.id.tvUserProfileUserName);
+        tvEmail = getView().findViewById(R.id.tvUserProfileEmail);
+        tvAlreadyAddFriend = getView().findViewById(R.id.tvAlreadyAddFriend);
+
+        if (getArguments() != null) {
+            Info info = getArguments().getParcelable(OTHER_INFO);
+            tvEmail.setText(info.getEmail());
+            tvUsername.setText(info.getUsername());
+            Glide.with(getContext()).load(info.getAvatar()).error(R.drawable.userimage).circleCrop().into(imvAvatar);
+            Glide.with(getContext()).load(info.getAvatar()).error(R.drawable.userimage).fitCenter().into(imvBackground);
+            if (info.isAddFriend()) {
+               tvAlreadyAddFriend.setVisibility(View.VISIBLE);
+               btnChatOrAddFriend.setVisibility(View.GONE);
+            } else {
+                btnChatOrAddFriend.setText(getString(R.string.add_friend));
+                btnChatOrAddFriend.setVisibility(View.VISIBLE);
+                tvAlreadyAddFriend.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void initAction() {
+        btnChatOrAddFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Info info = getArguments().getParcelable(OTHER_INFO);
+                SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
+                String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
+                String userName = sharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
+                userProfileController.sendFriendRequest(uid, userName, "", info.getUid());
+            }
+        });
+    }
+
+    private void initObserver() {
+        userProfileController = new UserProfileController(new UserProfileCallBack() {
+            @Override
+            public void onAddFriend(boolean status, String message) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+            }
+
+            @Override
+            public void onLoading(boolean isLoading) {
+                ((MainActivity) getActivity()).showLoading(isLoading);
+            }
+        });
     }
 
     @Override
@@ -63,4 +128,8 @@ public class UserProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
+
+    public static final String OTHER_INFO = "OTHER_INFO";
+
+    public static final String TAG = "UserProfileFragment";
 }

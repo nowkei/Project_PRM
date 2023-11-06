@@ -26,10 +26,22 @@
     <!-- Friends Region -->
     <string name="online">Online</string>
     <string name="offline">Offline</string>
+    <string name="find_other_user">Find other user</string>
     <!-- end region -->
 
     <!-- Loading region-->
     <string name="loading">Loading, please wait...</string>
+    <!-- end region -->
+
+    <!-- Find Other User region -->
+    <string name="find_other_user_here_hint">Find other user here!</string>
+    <string name="no_user_found">No User Found!!!</string>
+    <!-- end region -->
+
+    <!-- Get Other User Profile -->
+    <string name="already_add_friend">Already sent friend request</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="chat">Chat</string>
     <!-- end region -->
 
     <!-- Network region -->

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.project_prm.R;
+import com.example.project_prm.fragment.findotheruser.FindOtherUsersFragment;
 import com.example.project_prm.fragment.friends.adapter.FriendItemAdapter;
 import com.example.project_prm.model.Friend;
 import com.example.project_prm.util.SharedPreferencesKey;
@@ -33,6 +37,8 @@ public class FriendsFragment extends Fragment {
     private FriendsController friendsController;
 
     private ArrayList<Friend> currentFriends;
+
+    private Button btnFindOtherUser;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -66,6 +72,7 @@ public class FriendsFragment extends Fragment {
 
     private void initView() {
         initRcvFriends();
+        btnFindOtherUser = getView().findViewById(R.id.btnFindFriend);
     }
 
     private void initRcvFriends() {
@@ -81,7 +88,26 @@ public class FriendsFragment extends Fragment {
     }
 
     private void initAction() {
+        btnFindOtherUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addFragmentFromFragmentContainerHost(FindOtherUsersFragment.newInstance(), FindOtherUsersFragment.TAG);
+            }
+        });
+    }
 
+    private void addFragmentFromFragmentContainerHost(Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.anim_slide_in,
+                R.anim.anim_fade_out,
+                R.anim.anim_fade_in,
+                R.anim.anim_slide_out);
+        fragmentTransaction.setReorderingAllowed(true);
+        fragmentTransaction.add(R.id.fragmentContainer, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.commit();
     }
 
     private void initObserver() {
