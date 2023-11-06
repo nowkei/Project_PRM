@@ -44,7 +44,7 @@ public class LoginController {
                     });
                     databaseReferences.child("Users").child(userId).child("isOnline").setValue(true);
                 } else {
-                    loginCallBack.onLoginResult(false, "Login fail, please try again", "", "", "", "" );
+                    loginCallBack.onLoginResult(false, "User email or password is incorrect", "", "", "", "" );
                 }
                 loginCallBack.onLoading(false);
             }

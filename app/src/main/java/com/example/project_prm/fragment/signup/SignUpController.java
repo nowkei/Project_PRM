@@ -51,7 +51,7 @@ public class SignUpController {
                         }
                     });
                 } else {
-                    signUpCallBack.onSignUpResult(false, "Sign up fail, please try again!");
+                    signUpCallBack.onSignUpResult(false, "Email has been existing");
                 }
                 signUpCallBack.onLoading(false);
             }

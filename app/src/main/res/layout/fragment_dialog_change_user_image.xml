@@ -36,7 +36,7 @@
             <View
                 android:layout_width="350dp"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@color/gray"
@@ -64,7 +64,6 @@
                 android:id="@+id/txtImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
                 android:layout_marginTop="60dp"
                 android:text="Ảnh Đại Diện"
                 android:textAllCaps="true"

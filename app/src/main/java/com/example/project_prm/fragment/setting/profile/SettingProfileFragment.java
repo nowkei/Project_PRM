@@ -169,16 +169,18 @@ public class SettingProfileFragment extends Fragment {
     private void initObserver() {
         settingProfileCallback = new SettingProfileCallback() {
             @Override
-            public void onUpdateResult(boolean result, String message) {
+            public void onUpdateResult(boolean result, String message, String newpassword) {
                 if(result) {
-                    SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
-                    String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
-                    sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERID);
-                    sharedPreferencesUtil.deleteData(SharedPreferencesKey.EMAIL);
-                    sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERNAME);
-                    sharedPreferencesUtil.deleteData(SharedPreferencesKey.PASSWORD);
-                    settingController.logOut(uid);
-                    replaceFragment(LoginFragment.newInstance("",""), LoginFragment.TAG);
+                    if(!newpassword.isEmpty()) {
+                        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
+                        String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
+                        sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERID);
+                        sharedPreferencesUtil.deleteData(SharedPreferencesKey.EMAIL);
+                        sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERNAME);
+                        sharedPreferencesUtil.deleteData(SharedPreferencesKey.PASSWORD);
+                        settingController.logOut(uid);
+                        replaceFragment(LoginFragment.newInstance("", ""), LoginFragment.TAG);
+                    }
                     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();

@@ -102,7 +102,7 @@ public class LoginFragment extends Fragment {
                 String password = edtPassword.getText().toString();
                 if(email.isEmpty() || password.isEmpty()){
                     Toast.makeText(requireContext(), "Please enter your username and password", Toast.LENGTH_LONG).show();
-                } if (containsSpace(email) || containsSpace(password)) {
+                } else if (containsSpace(email) || containsSpace(password)) {
                     Toast.makeText(requireContext(), "Cannot contain spaces", Toast.LENGTH_LONG).show();
                 }
                 else{
@@ -149,7 +149,7 @@ public class LoginFragment extends Fragment {
 
                     replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG);
                 }
-                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
             }
 
             @Override

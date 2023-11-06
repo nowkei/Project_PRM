@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
-import com.example.project_prm.fragment.setting.DialogChangeUserImageFragment;
 import com.example.project_prm.fragment.setting.SettingController;
 import com.example.project_prm.fragment.setting.profile.SettingProfileCallback;
 import com.example.project_prm.fragment.setting.profile.SettingProfileController;
@@ -48,8 +47,9 @@ public class ForgetPasswordFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                replaceFragment(LoginFragment.newInstance("", ""), LoginFragment.TAG);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+//                replaceFragment(LoginFragment.newInstance("", ""), LoginFragment.TAG);
             }
         });
         confirmEmail.setOnClickListener(new View.OnClickListener() {
