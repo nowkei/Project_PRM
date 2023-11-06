@@ -5,24 +5,35 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class Notification implements Parcelable {
-    String username;
-    String content;
-    String uid;
+    private String username;
+    private String content;
+    private String uid;
+    private String avatar;
 
-    public Notification(String username, String content, String uid) {
+    public Notification(String username, String content, String uid, String avatar) {
         this.username = username;
         this.content = content;
         this.uid = uid;
+        this.avatar = avatar;
     }
 
     public Notification() {
 
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     protected Notification(Parcel in) {
         username = in.readString();
         content = in.readString();
         uid = in.readString();
+        avatar = in.readString();
     }
 
     public static final Creator<Notification> CREATOR = new Creator<Notification>() {
@@ -71,5 +82,6 @@ public class Notification implements Parcelable {
         parcel.writeString(username);
         parcel.writeString(content);
         parcel.writeString(uid);
+        parcel.writeString(avatar);
     }
 }

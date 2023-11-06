@@ -90,22 +90,22 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
     public void onBindViewHolder(@NonNull WorldViewHolder holder, @SuppressLint("RecyclerView") int position) {
        holder.getTvUsername().setText(notifications.get(position).getUsername());
        holder.getTvRq().setText(notifications.get(position).getContent());
-       Glide.with(context).load("").error(R.drawable.userimage).circleCrop().into(holder.getImgView());
+       Glide.with(context).load(notifications.get(position).getAvatar()).error(R.drawable.userimage).circleCrop().into(holder.getImgView());
        holder.getBtnAcp().setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-                notificationItemCallBack.onButtonClick("Acp", position);
+                notificationItemCallBack.onButtonClick("Accept", notifications.get(position));
            }
        });
        holder.getBtnDecline().setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-                notificationItemCallBack.onButtonClick("Decline", position);
+                notificationItemCallBack.onButtonClick("Decline", notifications.get(position));
            }
        });
     }
 }
 
 interface NotificationItemCallBack {
-    public void onButtonClick(String button, int position);
+    public void onButtonClick(String button, Notification notification);
 }

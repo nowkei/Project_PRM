@@ -45,12 +45,11 @@ public class UserProfileController {
                 }
             }
         });
-
         // update other send request
         HashMap<String, Object> requestData = new HashMap<>();
         String sendRequestKey = databaseReference.child(currentUid).child("sendRequests").push().getKey();
         HashMap<String, String> requestBody = new HashMap<>();
-        requestBody.put("uid", currentUid);
+        requestBody.put("uid", sentUserid);
         requestData.put(sendRequestKey, requestBody);
         databaseReference.child(currentUid).child("sendRequests").updateChildren(requestData).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

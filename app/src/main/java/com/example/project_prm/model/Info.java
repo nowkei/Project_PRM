@@ -14,7 +14,8 @@ public class Info implements Parcelable {
     private String phoneNumber;
     private String avatar;
     private String address;
-    private boolean isAddFriend;
+    private boolean isSendFriendRequest;
+    private boolean isFriend;
 
     protected Info(Parcel in) {
         uid = in.readString();
@@ -24,7 +25,8 @@ public class Info implements Parcelable {
         phoneNumber = in.readString();
         avatar = in.readString();
         address = in.readString();
-        isAddFriend = in.readBoolean();
+        isSendFriendRequest = in.readBoolean();
+        isFriend = in.readBoolean();
     }
 
     public static final Creator<Info> CREATOR = new Creator<Info>() {
@@ -105,12 +107,20 @@ public class Info implements Parcelable {
         this.password = password;
     }
 
-    public boolean isAddFriend() {
-        return isAddFriend;
+    public boolean isSendFriendRequest() {
+        return isSendFriendRequest;
     }
 
-    public void setAddFriend(boolean addFriend) {
-        isAddFriend = addFriend;
+    public void setSendFriendRequest(boolean sendFriendRequest) {
+        isSendFriendRequest = sendFriendRequest;
+    }
+
+    public boolean isFriend() {
+        return isFriend;
+    }
+
+    public void setFriend(boolean friend) {
+        isFriend = friend;
     }
 
     @Override
@@ -127,6 +137,7 @@ public class Info implements Parcelable {
         parcel.writeString(phoneNumber);
         parcel.writeString(avatar);
         parcel.writeString(address);
-        parcel.writeBoolean(isAddFriend);
+        parcel.writeBoolean(isSendFriendRequest);
+        parcel.writeBoolean(isFriend);
     }
 }

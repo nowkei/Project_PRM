@@ -7,4 +7,5 @@ import java.util.ArrayList;
 public interface NotificationCallBack {
     void onLoading(boolean isLoading);
     void onNotificationChange(ArrayList<Notification> notifications);
+    void onNotificationAcceptOrDecline(boolean status, boolean isAccept ,String message);
 }
