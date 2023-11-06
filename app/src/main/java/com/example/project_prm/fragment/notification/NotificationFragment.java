@@ -85,6 +85,14 @@ public class NotificationFragment extends Fragment {
     private void initObserver(){
         notificationCallBack = new NotificationCallBack() {
             @Override
+            public void onNotificationAcceptOrDecline(boolean status, boolean isAccept, String message) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                if (status) {
+                    getNotificationFromUserId();
+                }
+            }
+
+            @Override
             public void onLoading(boolean isLoading) {
                 ((MainActivity) getActivity()).showLoading(isLoading);
             }
@@ -107,11 +115,15 @@ public class NotificationFragment extends Fragment {
     private void initRecycleView(ArrayList<Notification> notifications) {
         NotificationItemCallBack callBack = new NotificationItemCallBack() {
             @Override
-            public void onButtonClick(String button, int position) {
-                if (button.equals("Acp")) {
-
+            public void onButtonClick(String button, Notification notification) {
+                SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
+                String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
+                String userName = sharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
+                String avatar = "";
+                if (button.equals("Accept")) {
+                    notificationController.acceptNotification(uid, userName, avatar, notification);
                 } else {
-                    notificationController.removeNotification(position, notifications);
+                    notificationController.declineNotification(uid, notification);
                 }
             }
         };

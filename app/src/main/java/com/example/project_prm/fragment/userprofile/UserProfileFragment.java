@@ -85,11 +85,15 @@ public class UserProfileFragment extends Fragment {
             tvAddress.setText(info.getAddress());
             Glide.with(getContext()).load(info.getAvatar()).error(R.drawable.userimage).circleCrop().into(imvAvatar);
             Glide.with(getContext()).load(info.getAvatar()).error(R.drawable.userimage).fitCenter().into(imvBackground);
-            if (info.isAddFriend()) {
-               tvAlreadyAddFriend.setVisibility(View.VISIBLE);
-               btnChatOrAddFriend.setVisibility(View.GONE);
+            if (info.isFriend()) {
+               tvAlreadyAddFriend.setVisibility(View.GONE);
+               btnChatOrAddFriend.setVisibility(View.VISIBLE);
+               btnChatOrAddFriend.setText(R.string.chat);
+            } else if (info.isSendFriendRequest()) {
+                tvAlreadyAddFriend.setVisibility(View.VISIBLE);
+                btnChatOrAddFriend.setVisibility(View.GONE);
             } else {
-                btnChatOrAddFriend.setText(getString(R.string.add_friend));
+                btnChatOrAddFriend.setText(R.string.add_friend);
                 btnChatOrAddFriend.setVisibility(View.VISIBLE);
                 tvAlreadyAddFriend.setVisibility(View.GONE);
             }

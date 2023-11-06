@@ -30,6 +30,7 @@ public class FindOtherUsersController {
         databaseReference.child("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                infors.clear();
                 if (containText.isEmpty()) {
                     infors.clear();
                 } else {
@@ -45,11 +46,24 @@ public class FindOtherUsersController {
                                 checking.put("uid", uid);
                                 checking.put("avatar", avatar);
                                 checking.put("userName", userName);
-                                info.setAddFriend(false);
+                                info.setSendFriendRequest(false);
                                 if (notifications.containsValue(checking)) {
-                                    info.setAddFriend(true);
+                                    info.setSendFriendRequest(true);
                                 }
                             }
+
+                            if (parent.get("friends") != null) {
+                                HashMap<String, HashMap<String, String>> friends = (HashMap<String, HashMap<String, String>>) parent.get("friends");
+                                HashMap<String, String> check = new HashMap<>();
+                                check.put("avatar", avatar);
+                                check.put("uid", uid);
+                                check.put("userName", userName);
+                                info.setFriend(false);
+                                if (friends.containsValue(check)) {
+                                    info.setFriend(true);
+                                }
+                            }
+
                             info.setUsername(infoMap.get("userName"));
                             info.setEmail(infoMap.get("email"));
                             info.setUid(infoMap.get("userId"));
