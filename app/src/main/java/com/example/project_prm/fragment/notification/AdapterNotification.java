@@ -29,6 +29,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
     public AdapterNotification(ArrayList<Notification> notifications, NotificationItemCallBack notificationItemCallBack, Context context) {
         this.notifications = notifications;
         this.notificationItemCallBack = notificationItemCallBack;
+        this.context = context;
     }
 
     public void changeDataSet(ArrayList<Notification> notifications) {
@@ -89,7 +90,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
     public void onBindViewHolder(@NonNull WorldViewHolder holder, @SuppressLint("RecyclerView") int position) {
        holder.getTvUsername().setText(notifications.get(position).getUsername());
        holder.getTvRq().setText(notifications.get(position).getContent());
-        Glide.with(context).load("").error(R.drawable.userimage).circleCrop().into(holder.getImgView());
+       Glide.with(context).load("").error(R.drawable.userimage).circleCrop().into(holder.getImgView());
        holder.getBtnAcp().setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
