@@ -21,7 +21,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.userprofile.UserProfileFragment;
 import com.example.project_prm.model.Info;
@@ -37,6 +36,7 @@ public class FindOtherUsersFragment extends Fragment {
     private EditText edtSearch;
 
     private TextView tvNoUserFound;
+    private TextView back;
 
     private FindOtherUserAdapter findOtherUserAdapter;
 
@@ -77,6 +77,7 @@ public class FindOtherUsersFragment extends Fragment {
         edtSearch = getView().findViewById(R.id.edtFindOtherUser);
         initRcvFindOtherUsers();
         tvNoUserFound = getView().findViewById(R.id.tvNoUserFound);
+        back = getView().findViewById(R.id.txtback);
     }
 
     private void initRcvFindOtherUsers() {
@@ -100,6 +101,13 @@ public class FindOtherUsersFragment extends Fragment {
     }
 
     private void initAction() {
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+            }
+        });
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -128,6 +136,7 @@ public class FindOtherUsersFragment extends Fragment {
                 if (u.isEmpty()) {
                     rcvFindOtherUsers.setVisibility(View.GONE);
                     tvNoUserFound.setVisibility(View.VISIBLE);
+
                 } else {
                     tvNoUserFound.setVisibility(View.GONE);
                     rcvFindOtherUsers.setVisibility(View.VISIBLE);

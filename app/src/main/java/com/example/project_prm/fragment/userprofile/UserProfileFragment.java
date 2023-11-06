@@ -34,6 +34,7 @@ public class UserProfileFragment extends Fragment {
     private TextView tvUsername;
 
     private TextView tvEmail;
+    private TextView tvAddress;
 
     private UserProfileController userProfileController;
 
@@ -74,12 +75,14 @@ public class UserProfileFragment extends Fragment {
         imvAvatar = getView().findViewById(R.id.imvOtherUserImage);
         tvUsername = getView().findViewById(R.id.tvUserProfileUserName);
         tvEmail = getView().findViewById(R.id.tvUserProfileEmail);
+        tvAddress = getView().findViewById(R.id.tvUserProfileAddress);
         tvAlreadyAddFriend = getView().findViewById(R.id.tvAlreadyAddFriend);
 
         if (getArguments() != null) {
             Info info = getArguments().getParcelable(OTHER_INFO);
             tvEmail.setText(info.getEmail());
             tvUsername.setText(info.getUsername());
+            tvAddress.setText(info.getAddress());
             Glide.with(getContext()).load(info.getAvatar()).error(R.drawable.userimage).circleCrop().into(imvAvatar);
             Glide.with(getContext()).load(info.getAvatar()).error(R.drawable.userimage).fitCenter().into(imvBackground);
             if (info.isAddFriend()) {

@@ -82,8 +82,8 @@
             <LinearLayout
                 android:id="@+id/contentLayout"
                 android:layout_width="match_parent"
-                android:layout_height="98dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="@dimen/layout_height_170dp"
+                android:layout_marginTop="@dimen/margin_20dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.6"
@@ -96,16 +96,25 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="User Name"
-                    android:textSize="36sp" />
+                    android:textSize="@dimen/userName_text_Setting_36sp" />
 
                 <TextView
                     android:id="@+id/tvUserProfileEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:text="User email"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/medium_text" />
+                <TextView
+                    android:id="@+id/tvUserProfileAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:text="address"
+                    android:textSize="@dimen/medium_text"/>
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,9 +45,9 @@ public class SettingProfileController {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    settingProfileCallback.onUpdateResult(true, "Update success");
+                    settingProfileCallback.onUpdateResult(true, "Update success", newPassword);
                 } else {
-                    settingProfileCallback.onUpdateResult(false, "Update fail, please try again!");
+                    settingProfileCallback.onUpdateResult(false, "Update fail, please try again!", newPassword);
                 }
                 settingProfileCallback.onLoading(false);
             }

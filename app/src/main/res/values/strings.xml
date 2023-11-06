@@ -4,7 +4,7 @@
 
     <!-- Login region -->
     <string name="button_login_text">LOGIN</string>
-    <string name="user_email">Username</string>
+    <string name="user_email">UserEmail</string>
     <string name="user_password">Password</string>
     <string name="hint_text_email">Enter your email</string>
     <string name="hint_text_password">Enter your password</string>
@@ -15,6 +15,7 @@
     <string name="match_password">Passwords must match</string>
     <string name="space_password">Password cannot contain spaces</string>
     <string name="incorrect_password">Password is incorrect</string>
+    <string name="email_existing">Email has been existed</string>
     <string name="empty_username">Enter your Username</string>
     <string name="empty_email">Enter your Email</string>
     <string name="empty_password">Enter your Password</string>

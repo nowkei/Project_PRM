@@ -16,20 +16,25 @@ import android.widget.TextView;
 
 import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
+import com.example.project_prm.fragment.friends.FriendsFragment;
 import com.example.project_prm.fragment.login.LoginFragment;
 import com.example.project_prm.fragment.setting.profile.SettingProfileFragment;
 import com.example.project_prm.util.SharedPreferencesKey;
 import com.example.project_prm.util.SharedPreferencesUtil;
 
+import java.util.ArrayList;
+
 public class SettingFragment extends Fragment {
 
     private Button btnLogout;
     private Button btnSetting;
+    private Button btnShowFriend;
     private  SettingController settingController;
 
     private TextView username;
     private TextView userEmail;
     private void initView() {
+        btnShowFriend = getView().findViewById(R.id.btnShowFriend);
         btnLogout = getView().findViewById(R.id.btnSaveData);
         btnSetting = getView().findViewById(R.id.btnSettingProfile);
         username = getView().findViewById(R.id.txtName);
@@ -43,6 +48,7 @@ public class SettingFragment extends Fragment {
     }
 
     private void initAction(){
+
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
