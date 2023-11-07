@@ -80,9 +80,11 @@ public class MainActivity extends AppCompatActivity implements DialogChangeUserI
                 .setReorderingAllowed(true);
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getApplicationContext());
         if (sharedPreferencesUtil.getData(SharedPreferencesKey.USERID) != null && !sharedPreferencesUtil.getData(SharedPreferencesKey.USERID).isEmpty()) {
+            //fragmentTransaction.addToBackStack(HomeFragment.TAG);
             fragmentTransaction.add(R.id.fragmentContainer, HomeFragment.newInstance(), HomeFragment.TAG)
                     .commit();
         } else {
+            //fragmentTransaction.addToBackStack(WelcomeFragment.TAG);
             fragmentTransaction.add(R.id.fragmentContainer, WelcomeFragment.newInstance(), WelcomeFragment.TAG)
                     .commit();
         }

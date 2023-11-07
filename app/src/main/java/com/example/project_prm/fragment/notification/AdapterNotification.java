@@ -52,9 +52,9 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
         public WorldViewHolder(View view) {
             super(view);
-            imgView = (ImageView) view.findViewById(R.id.img_ava);
+            imgView = (ImageView) view.findViewById(R.id.imvOtherUserChatAvatar);
             tvUsername = (TextView) view.findViewById(R.id.chat_title);
-            tvRq = (TextView) view.findViewById(R.id.chat_content);
+            tvRq = (TextView) view.findViewById(R.id.tvOtherUserChat);
             btnAcp = (Button) view.findViewById(R.id.btn_accpect);
             btnDecline = (Button) view.findViewById(R.id.btn_decline);
         }

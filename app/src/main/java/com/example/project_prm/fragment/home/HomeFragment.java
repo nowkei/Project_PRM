@@ -1,6 +1,7 @@
 package com.example.project_prm.fragment.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,7 +84,7 @@ public class HomeFragment extends Fragment {
         bottomNavigationView = getView().findViewById(R.id.bnvNavigation);
         initTvBadge();
         ((MainActivity) getActivity()).showTitleBar(true, "Chats");
-        replaceFragment(ChatsFragment.newInstance("",""), "ChatsFragment");
+        replaceFragment(ChatsFragment.newInstance(), ChatsFragment.TAG);
     }
 
     private void initTvBadge() {
@@ -98,7 +99,7 @@ public class HomeFragment extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.chats && getActivity().getSupportFragmentManager().findFragmentByTag(ChatsFragment.TAG) == null) {
                     ((MainActivity) getActivity()).showTitleBar(true, "Chats");
-                    replaceFragment(ChatsFragment.newInstance("", ""), ChatsFragment.TAG); // add chat fragment
+                    replaceFragment(ChatsFragment.newInstance(), ChatsFragment.TAG); // add chat fragment
                 } else if (item.getItemId() == R.id.setting && getActivity().getSupportFragmentManager().findFragmentByTag(SettingFragment.TAG) == null) {
                     ((MainActivity) getActivity()).showTitleBar(true, "Setting");
                     replaceFragment(SettingFragment.newInstance(), SettingFragment.TAG); // add setting fragment
@@ -115,6 +116,16 @@ public class HomeFragment extends Fragment {
     }
 
     private void initObserver() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (fragmentManager.findFragmentByTag(ChatsFragment.TAG) != null) {
+                    ((MainActivity) getActivity()).showTitleBar(true, "Chats");
+                }
+            }
+        });
+
         homeCallBack = new HomeCallBack() {
             @Override
             public void onNotificationResult(boolean result, String message, ArrayList<Notification> notifications) {
@@ -200,6 +211,10 @@ public class HomeFragment extends Fragment {
         fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.replace(R.id.homeFragmentContainer, fragment, tag);
         fragmentTransaction.commit();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     public static final String TAG = "HomeFragment";

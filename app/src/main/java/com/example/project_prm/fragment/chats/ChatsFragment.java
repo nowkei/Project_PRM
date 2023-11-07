@@ -10,17 +10,22 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
+import com.example.project_prm.fragment.chatting.ChattingFragment;
 import com.example.project_prm.model.Chats;
+import com.example.project_prm.util.SharedPreferencesKey;
+import com.example.project_prm.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,15 +33,6 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ChatsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private ChatsCallBack chatsCallBack;
     private ChatsController chatsController;
     private ImageView img_chatAva;
@@ -44,25 +40,14 @@ public class ChatsFragment extends Fragment {
     private TextView chatContent;
     private TextView chatTime;
     private RecyclerView recyclerView;
+    private AdapterChats adapter;
 
     public ChatsFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChatsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChatsFragment newInstance(String param1, String param2) {
+    public static ChatsFragment newInstance() {
         ChatsFragment fragment = new ChatsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,8 +68,6 @@ public class ChatsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
     private void initAction(){
@@ -93,37 +76,56 @@ public class ChatsFragment extends Fragment {
     private void initView(){
         img_chatAva = getView().findViewById(R.id.img_chatAvatar);
         chatTitle = getView().findViewById(R.id.chat_title);
-        chatContent = getView().findViewById(R.id.chat_content);
+        chatContent = getView().findViewById(R.id.tvOtherUserChat);
         chatTime = getView().findViewById(R.id.chat_time);
-        recyclerView = getView().findViewById(R.id.rcv_chats);
+        initRcvChats();
     }
-    private void initObserver(){
+
+    private void initRcvChats() {
+        recyclerView = getView().findViewById(R.id.rcv_chats);
+        adapter = new AdapterChats(new ArrayList<>(), new ChatsItemCallBack() {
+            @Override
+            public void getChatsItem(Chats chats) {
+                if (getParentFragmentManager().findFragmentByTag(ChattingFragment.CHAT) == null)
+                    replaceFragment(ChattingFragment.newInstance(chats), ChattingFragment.TAG);
+            }
+        }, requireContext());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
+    }
+
+    HashSet<Chats> chatSet = new HashSet<>();
+
+    private void initObserver() {
         chatsCallBack = new ChatsCallBack() {
             @Override
             public void onChatsResult(boolean result, String message, ArrayList<Chats> chats) {
                 if (result) {
-                    AdapterChats adapter = new AdapterChats(chats);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-                    recyclerView.setAdapter(adapter);
+                    chatSet.clear();
+                    chatSet.addAll(chats);
+                    adapter.changeDataSet(new ArrayList<>(chatSet));
                 }
+            }
+
+            @Override
+            public void onLoading(boolean isLoading) {
+                if (getActivity() != null)
+                    ((MainActivity) getActivity()).showLoading(isLoading);
+            }
+
+            @Override
+            public void onChatUpdate(Chats chat) {
+
             }
         };
         chatsController = new ChatsController(chatsCallBack);
-        chatsController.getChats();
+        getAllChatByUserId();
     }
 
-    private void addFragment(Fragment fragment, String tag) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(
-                R.anim.anim_slide_in,
-                R.anim.anim_fade_out,
-                R.anim.anim_fade_in,
-                R.anim.anim_slide_out);
-        fragmentTransaction.setReorderingAllowed(true);
-        fragmentTransaction.add(R.id.homeFragmentContainer, fragment, tag);
-        fragmentTransaction.addToBackStack(tag);
-        fragmentTransaction.commit();
+    private void getAllChatByUserId() {
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
+        String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
+        chatsController.getChats(uid);
     }
 
     private void replaceFragment(Fragment fragment, String tag) {
@@ -135,11 +137,10 @@ public class ChatsFragment extends Fragment {
                 R.anim.anim_fade_in,
                 R.anim.anim_slide_out);
         fragmentTransaction.setReorderingAllowed(true);
-        fragmentTransaction.replace(R.id.homeFragmentContainer, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment, tag);
         fragmentTransaction.commit();
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
