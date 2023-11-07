@@ -49,7 +49,7 @@ public class FindOtherUserAdapter extends RecyclerView.Adapter<FindOtherUserAdap
     public void onBindViewHolder(@NonNull FindOtherUserViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.getTvUserName().setText(infos.get(position).getUsername());
         holder.getTvStatus().setVisibility(View.INVISIBLE);
-        Glide.with(context).load("").error(R.drawable.userimage).circleCrop().into(holder.getImvAvatar());
+        Glide.with(context).load(infos.get(position).getAvatar()).error(R.drawable.userimage).circleCrop().into(holder.getImvAvatar());
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

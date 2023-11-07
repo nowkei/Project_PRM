@@ -6,4 +6,8 @@ import java.util.ArrayList;
 
 public interface ChatsCallBack {
     public void onChatsResult(boolean result, String message, ArrayList<Chats> chats);
+
+    public void onLoading(boolean isLoading);
+
+    public void onChatUpdate(Chats chat);
 }
