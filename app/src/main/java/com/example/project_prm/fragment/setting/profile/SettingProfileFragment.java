@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.home.HomeFragment;
@@ -42,6 +43,7 @@ public class SettingProfileFragment extends Fragment {
     private EditText edtNewPassWord;
     private EditText edtConfPassWord;
     private ImageView imgUserImage;
+    private ImageView imgBackground;
     private EditText edtAddress;
     private TextView userName;
     private TextView userEmail;
@@ -55,6 +57,7 @@ public class SettingProfileFragment extends Fragment {
         edtNewPassWord = getView().findViewById(R.id.edtNewPassword);
         edtConfPassWord = getView().findViewById(R.id.edtconfPassword);
         imgUserImage = getView().findViewById(R.id.userImage);
+        imgBackground = getView().findViewById(R.id.imageBackground);
         edtAddress = getView().findViewById(R.id.edtAddress);
         userName = getView().findViewById(R.id.txtSettingName);
         userEmail = getView().findViewById(R.id.txtSettingEmail);
@@ -67,6 +70,7 @@ public class SettingProfileFragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DialogChangeUserImageFragment changeUserImageFragment = new DialogChangeUserImageFragment();
                 changeUserImageFragment.setOnImageCaptureListener((MainActivity) getActivity());
+                changeUserImageFragment.setOnPhotoCaptureListener((MainActivity) getActivity());
                 changeUserImageFragment.show(fragmentManager, DialogChangeUserImageFragment.TAG);
             }
         });
@@ -204,8 +208,14 @@ public class SettingProfileFragment extends Fragment {
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
         String email = sharedPreferencesUtil.getData(SharedPreferencesKey.EMAIL);
         String name = sharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
+        String avatar = sharedPreferencesUtil.getData(SharedPreferencesKey.AVATAR);
+        Glide.with(getContext()).load(avatar).into(imgBackground);
+        Glide.with(getContext()).load(avatar).into(imgUserImage);
+
+
         userEmail.setText(email);
         userName.setText(name);
+
         //edtOldPassWord.setText(u.getPassword());
         edtAddress.setText(u.getAddress());
     }
@@ -259,6 +269,9 @@ public class SettingProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setting_profile, container, false);
     }
+
+
+
     private boolean containsSpace(String text) {
         return text.contains(" ");
     }

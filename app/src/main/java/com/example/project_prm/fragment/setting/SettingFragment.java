@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.friends.FriendsFragment;
@@ -29,6 +31,8 @@ public class SettingFragment extends Fragment {
     private Button btnLogout;
     private Button btnSetting;
     private Button btnShowFriend;
+    private ImageView avatarSetting;
+    private ImageView backgroundSetting;
     private  SettingController settingController;
 
     private TextView username;
@@ -37,14 +41,20 @@ public class SettingFragment extends Fragment {
         btnShowFriend = getView().findViewById(R.id.btnShowFriend);
         btnLogout = getView().findViewById(R.id.btnSaveData);
         btnSetting = getView().findViewById(R.id.btnSettingProfile);
+        avatarSetting = getView().findViewById(R.id.img_user_layout_setting);
+        backgroundSetting = getView().findViewById(R.id.img_user_background_setting);
         username = getView().findViewById(R.id.txtName);
         userEmail = getView().findViewById(R.id.txtEmail);
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
         String userName = sharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
         String email = sharedPreferencesUtil.getData(SharedPreferencesKey.EMAIL);
+        String avatar = sharedPreferencesUtil.getData(SharedPreferencesKey.AVATAR);
+
 
         username.setText(userName);
         userEmail.setText(email);
+        Glide.with(getContext()).load(avatar).into(avatarSetting);
+        Glide.with(getContext()).load(avatar).into(backgroundSetting);
     }
 
     private void initAction(){
@@ -57,6 +67,8 @@ public class SettingFragment extends Fragment {
                 sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERID);
                 sharedPreferencesUtil.deleteData(SharedPreferencesKey.EMAIL);
                 sharedPreferencesUtil.deleteData(SharedPreferencesKey.USERNAME);
+                sharedPreferencesUtil.deleteData(SharedPreferencesKey.AVATAR);
+
                 settingController.logOut(uid);
                 replaceFragment(LoginFragment.newInstance("",""), LoginFragment.TAG);
             }
