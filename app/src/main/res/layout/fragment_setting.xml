@@ -26,7 +26,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/imageBackground"
+            android:id="@+id/img_user_background_setting"
             android:layout_width="match_parent"
             android:layout_height="@dimen/layout_height_170dp"
             android:scaleType="centerCrop"
@@ -41,15 +41,16 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/conner_image_60dp"
             app:cardPreventCornerOverlap="true"
-            app:layout_constraintBottom_toBottomOf="@id/imageBackground"
+            app:layout_constraintBottom_toBottomOf="@id/img_user_background_setting"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageBackground"
+            app:layout_constraintTop_toBottomOf="@id/img_user_background_setting"
             app:strokeColor="@android:color/white"
             app:strokeWidth="3dp">
 
             <ImageView
+                android:id="@+id/img_user_layout_setting"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="0dp"
@@ -106,7 +107,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/bg"
-                android:text="setting frofile"
+                android:text="setting profile"
                 android:textColor="@color/white"
                 android:textSize="@dimen/medium_text" />
         </LinearLayout>

@@ -39,7 +39,6 @@ public class SettingProfileController {
         hashMap.put("userName", username);
         hashMap.put("email", userEmail);
         hashMap.put("avatar", "");
-        hashMap.put("phoneNumber", "");
         hashMap.put("userId", userId);
         databaseReferences.child("Users").child(userId).child("info").setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -75,4 +74,5 @@ public class SettingProfileController {
             }
         });
     }
+
 }

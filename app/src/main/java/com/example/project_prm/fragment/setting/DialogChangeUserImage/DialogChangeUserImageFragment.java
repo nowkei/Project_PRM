@@ -23,10 +23,18 @@ public class DialogChangeUserImageFragment extends DialogFragment {
     public interface OnImageCaptureListener {
         void onImageCaptureRequested();
     }
+    public interface OnPhotoCaptureListener {
+        void onPhotoCaptureRequested();
+
+    }
     private OnImageCaptureListener onImageCaptureListener;
+    private OnPhotoCaptureListener onPhotoCaptureListener;
 
     public void setOnImageCaptureListener(OnImageCaptureListener listener) {
         this.onImageCaptureListener = listener;
+    }
+    public void setOnPhotoCaptureListener(OnPhotoCaptureListener listener){
+        this.onPhotoCaptureListener = listener;
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -47,13 +55,26 @@ public class DialogChangeUserImageFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_dialog_change_user_image, container, false);
         TextView takeImage = rootView.findViewById(R.id.txtTakeImage);
+        TextView loadImage = rootView.findViewById(R.id.txtLoadImage);
 
         takeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dismiss();
                 if (onImageCaptureListener != null) {
                     onImageCaptureListener.onImageCaptureRequested();
                 }
+            }
+        });
+
+        loadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+                if(onPhotoCaptureListener != null){
+                    onPhotoCaptureListener.onPhotoCaptureRequested();
+                }
+
             }
         });
 
