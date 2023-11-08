@@ -1,11 +1,11 @@
 package com.example.project_prm.fragment.friends;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.example.project_prm.model.Friend;
 import com.example.project_prm.model.Info;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,7 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.Map;
 
 public class FriendsController {
 
@@ -71,6 +71,31 @@ public class FriendsController {
                 }
             });
         }
+    }
+
+    public void getFriendProfile(String friendId) {
+        friendsCallBack.onLoading(true);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("Users").child(friendId).child("info").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    Info info = new Info();
+                    Map<String,String> data = (HashMap<String, String>) task.getResult().getValue();
+                    info.setUid(friendId);
+                    info.setAddress(data.get("address"));
+                    info.setAvatar(data.get("avatar"));
+                    info.setEmail(data.get("email"));
+                    info.setPhoneNumber(data.get("phoneNumber"));
+                    info.setUsername(data.get("userName"));
+                    info.setFriend(true);
+                    friendsCallBack.onFriendProfile(true, "Get user profile success", info);
+                } else {
+                    friendsCallBack.onFriendProfile(false, "Login fail, please try again", null);
+                }
+                friendsCallBack.onLoading(false);
+            }
+        });
     }
 
 }

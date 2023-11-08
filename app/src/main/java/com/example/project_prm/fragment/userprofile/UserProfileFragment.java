@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
+import com.example.project_prm.fragment.chatting.ChattingFragment;
+import com.example.project_prm.model.Chats;
 import com.example.project_prm.model.Info;
 import com.example.project_prm.util.SharedPreferencesKey;
 import com.example.project_prm.util.SharedPreferencesUtil;
@@ -104,11 +106,15 @@ public class UserProfileFragment extends Fragment {
         btnChatOrAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Info info = getArguments().getParcelable(OTHER_INFO);
                 SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
                 String uid = sharedPreferencesUtil.getData(SharedPreferencesKey.USERID);
                 String userName = sharedPreferencesUtil.getData(SharedPreferencesKey.USERNAME);
-                userProfileController.sendFriendRequest(uid, userName, "", info.getUid());
+                Info info = getArguments().getParcelable(OTHER_INFO);
+                if (btnChatOrAddFriend.getText().equals(getString(R.string.add_friend))) {
+                    userProfileController.sendFriendRequest(uid, userName, "", info.getUid());
+                } else {
+                    userProfileController.startChat(uid, userName, info.getUid(), info.getUsername());
+                }
             }
         });
     }
@@ -126,7 +132,30 @@ public class UserProfileFragment extends Fragment {
             public void onLoading(boolean isLoading) {
                 ((MainActivity) getActivity()).showLoading(isLoading);
             }
+
+            @Override
+            public void onMoveToChat(boolean status, String message, Chats chats) {
+                if (status) {
+                    addFragmentFromFragmentContainer(ChattingFragment.newInstance(chats), ChattingFragment.TAG);
+                } else {
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
         });
+    }
+
+    private void addFragmentFromFragmentContainer(Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.anim_slide_in,
+                R.anim.anim_fade_out,
+                R.anim.anim_fade_in,
+                R.anim.anim_slide_out);
+        fragmentTransaction.setReorderingAllowed(true);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment, tag);
+        fragmentTransaction.commit();
     }
 
     @Override

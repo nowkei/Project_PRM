@@ -20,6 +20,7 @@ import com.example.project_prm.fragment.chats.ChatsFragment;
 import com.example.project_prm.fragment.friends.FriendsFragment;
 import com.example.project_prm.fragment.notification.NotificationFragment;
 import com.example.project_prm.fragment.setting.SettingFragment;
+import com.example.project_prm.fragment.userprofile.UserProfileFragment;
 import com.example.project_prm.model.Chats;
 import com.example.project_prm.model.Friend;
 import com.example.project_prm.model.Notification;
@@ -121,7 +122,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onBackStackChanged() {
                 if (fragmentManager.findFragmentByTag(ChatsFragment.TAG) != null) {
-                    ((MainActivity) getActivity()).showTitleBar(true, "Chats");
+                    if (getActivity() != null) {
+                        ((MainActivity) getActivity()).showTitleBar(true, "Chats");
+                        bottomNavigationView.setSelectedItemId(R.id.chats);
+                    }
+                } else if (fragmentManager.findFragmentByTag(FriendsFragment.TAG) != null) {
+                    if (getActivity() != null) {
+                        ((MainActivity) getActivity()).showTitleBar(true, "Friends");
+                        bottomNavigationView.setSelectedItemId(R.id.friend);
+                    }
                 }
             }
         });

@@ -15,11 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.project_prm.R;
 import com.example.project_prm.fragment.findotheruser.FindOtherUsersFragment;
 import com.example.project_prm.fragment.friends.adapter.FriendItemAdapter;
+import com.example.project_prm.fragment.friends.adapter.FriendItemCallBack;
+import com.example.project_prm.fragment.userprofile.UserProfileFragment;
 import com.example.project_prm.model.Friend;
+import com.example.project_prm.model.Info;
 import com.example.project_prm.util.SharedPreferencesKey;
 import com.example.project_prm.util.SharedPreferencesUtil;
 
@@ -76,13 +80,20 @@ public class FriendsFragment extends Fragment {
     }
 
     private void initRcvFriends() {
+        FriendItemCallBack friendItemCallBack = new FriendItemCallBack() {
+            @Override
+            public void onFriendProfile(String info) {
+                friendsController.getFriendProfile(info);
+            }
+        };
+
         rcvFriends = getView().findViewById(R.id.rcvFriendList);
         rcvFriends.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false ));
         if (getArguments() != null) {
             currentFriends = getArguments().getParcelableArrayList(FRIENDS);
-            adapter = new FriendItemAdapter(currentFriends, requireContext());
+            adapter = new FriendItemAdapter(currentFriends, friendItemCallBack ,requireContext());
         } else {
-            adapter = new FriendItemAdapter(new ArrayList<>(), requireContext());
+            adapter = new FriendItemAdapter(new ArrayList<>(), friendItemCallBack ,requireContext());
         }
         rcvFriends.setAdapter(adapter);
     }
@@ -110,6 +121,20 @@ public class FriendsFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    private void replaceFragmentFromFragmentContainer(Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.anim_slide_in,
+                R.anim.anim_fade_out,
+                R.anim.anim_fade_in,
+                R.anim.anim_slide_out);
+        fragmentTransaction.setReorderingAllowed(true);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.add(R.id.fragmentContainer, fragment, tag);
+        fragmentTransaction.commit();
+    }
+
     private void initObserver() {
         friendsCallBack = new FriendsCallBack() {
             @Override
@@ -119,7 +144,18 @@ public class FriendsFragment extends Fragment {
 
             @Override
             public void onLoading(boolean isLoading) {
+                if (getActivity() != null) {
 
+                }
+            }
+
+            @Override
+            public void onFriendProfile(boolean status, String message, Info info) {
+                if (status) {
+                    replaceFragmentFromFragmentContainer(UserProfileFragment.newInstance(info), UserProfileFragment.TAG);
+                } else {
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

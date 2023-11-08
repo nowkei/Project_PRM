@@ -1,5 +1,7 @@
 package com.example.project_prm.fragment.login;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,19 +34,20 @@ public class LoginController {
                 if (task.isSuccessful()) {
                     String userId = firebaseAuth.getUid();
                     databaseReferences = FirebaseDatabase.getInstance().getReference();
-                    databaseReferences.child("Users").child(userId).child("info").child("userName").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    databaseReferences.child("Users").child(userId).child("info").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            HashMap<String, String> infoData = (HashMap<String, String>) task.getResult().getValue();
                             if (task.isSuccessful()) {
-                                loginCallBack.onLoginResult(true, "Login success", task.getResult().getValue().toString(), email, userId, password);
+                                loginCallBack.onLoginResult(true, "Login success", infoData.get("userName").toString(), email, userId, password, infoData.get("avatar"));
                             } else {
-                                loginCallBack.onLoginResult(false, "Login fail, please try again", "", "", "", "");
+                                loginCallBack.onLoginResult(false, "Login fail, please try again", "", "", "", "", "");
                             }
                         }
                     });
                     databaseReferences.child("Users").child(userId).child("isOnline").setValue(true);
                 } else {
-                    loginCallBack.onLoginResult(false, "User email or password is incorrect", "", "", "", "" );
+                    loginCallBack.onLoginResult(false, "User email or password is incorrect", "", "", "", "", "");
                 }
                 loginCallBack.onLoading(false);
             }
