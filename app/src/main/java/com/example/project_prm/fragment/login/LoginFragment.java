@@ -138,7 +138,7 @@ public class LoginFragment extends Fragment {
     private void initObserver() {
         loginCallback = new LoginCallback() {
             @Override
-            public void onLoginResult(boolean result, String message, String username, String email, String userID, String pass) {
+            public void onLoginResult(boolean result, String message, String username, String email, String userID, String pass, String avatar) {
                 if (result) {
                     SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
 
@@ -146,6 +146,7 @@ public class LoginFragment extends Fragment {
                     sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.EMAIL, email);
                     sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.USERID, userID);
                     sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.PASSWORD, pass);
+                    sharedPreferencesUtil.addOrUpdateData(SharedPreferencesKey.AVATAR, avatar);
 
                     replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG);
                 }

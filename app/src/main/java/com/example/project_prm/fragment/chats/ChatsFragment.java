@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +86,7 @@ public class ChatsFragment extends Fragment {
             @Override
             public void getChatsItem(Chats chats) {
                 if (getParentFragmentManager().findFragmentByTag(ChattingFragment.CHAT) == null)
-                    replaceFragment(ChattingFragment.newInstance(chats), ChattingFragment.TAG);
+                    addFragmentFragmentContainer(ChattingFragment.newInstance(chats), ChattingFragment.TAG);
             }
         }, requireContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -128,7 +127,7 @@ public class ChatsFragment extends Fragment {
         chatsController.getChats(uid);
     }
 
-    private void replaceFragment(Fragment fragment, String tag) {
+    private void addFragmentFragmentContainer(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(

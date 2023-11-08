@@ -1,5 +1,6 @@
 package com.example.project_prm.fragment.friends.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,10 @@ public class FriendItemAdapter extends RecyclerView.Adapter<FriendItemAdapter.Fr
 
     Context context;
 
-    public FriendItemAdapter(ArrayList<Friend> users, Context context) {
+    FriendItemCallBack friendItemCallBack;
+
+    public FriendItemAdapter(ArrayList<Friend> users, FriendItemCallBack friendItemCallBack, Context context) {
+        this.friendItemCallBack = friendItemCallBack;
         this.friends = users;
         this.context = context;
     }
@@ -43,9 +47,9 @@ public class FriendItemAdapter extends RecyclerView.Adapter<FriendItemAdapter.Fr
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FriendItemViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.getTvUserName().setText(friends.get(position).getUser().getUsername());
-        Glide.with(context).load("").error(R.drawable.userimage).circleCrop().into(holder.getImvAvatar());
+        Glide.with(context).load(friends.get(position).getUser().getAvatar()).placeholder(R.drawable.userimage).error(R.drawable.userimage).circleCrop().into(holder.getImvAvatar());
         if (friends.get(position).isOnline()) {
             holder.getTvStatus().setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.green, null));
             holder.getTvStatus().setText(R.string.online);
@@ -53,6 +57,12 @@ public class FriendItemAdapter extends RecyclerView.Adapter<FriendItemAdapter.Fr
             holder.getTvStatus().setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.red, null));
             holder.getTvStatus().setText(R.string.offline);
         }
+        holder.getView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                friendItemCallBack.onFriendProfile(friends.get(position).getUser().getUid());
+            }
+        });
     }
 
     @Override
@@ -68,11 +78,14 @@ public class FriendItemAdapter extends RecyclerView.Adapter<FriendItemAdapter.Fr
 
         private TextView tvStatus;
 
+        private View view;
+
         public FriendItemViewHolder(View itemView) {
             super(itemView);
             tvUserName = (TextView) itemView.findViewById(R.id.tvFriendUsername);
             imvAvatar = (ImageView) itemView.findViewById(R.id.imvFriendAvatar);
             tvStatus = (TextView) itemView.findViewById(R.id.tvStatus);
+            view = itemView;
         }
 
         public TextView getTvUserName() {
@@ -86,5 +99,7 @@ public class FriendItemAdapter extends RecyclerView.Adapter<FriendItemAdapter.Fr
         public TextView getTvStatus() {
             return tvStatus;
         }
+
+        public View getView() { return view; }
     }
 }

@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class ChatsController {
-
-    private int count = 0;
     private ChatsCallBack chatsCallBack;
     private DatabaseReference databaseReference;
     public ChatsController(ChatsCallBack chatsCallBack) {
@@ -39,7 +37,6 @@ public class ChatsController {
                 allChat.clear();
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     HashMap<String, Object> parent = (HashMap<String, Object>) dataSnapshot.getValue();
-                    count++;
                     if (parent.get("toUserID").toString().equalsIgnoreCase(uid) || parent.get("fromUserID").toString().equalsIgnoreCase(uid)) {
                         String toId = "";
                         if (parent.get("fromUserID").toString().equals(uid)) {
